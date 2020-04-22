@@ -1,0 +1,21 @@
+.tribe-daystrip-container {
+    width: 100%;
+    border: 1px solid #000 !important;
+    line-height: 1.1;
+}
+.tribe-daystrip-day {
+    border: 1px solid #000 !important;
+    float:left;
+    display:inline-block;
+    text-align: center;
+}
+.tribe-daystrip-day span {
+    display: block;
+    text-align: center;
+}
+.tribe-daystrip-shortday {
+    font-size: 0.7em;
+}
+.tribe-daystrip-date {
+    line-he
+}

@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name:       [Base Plugin Name] Extension: [Extension Name]
- * Plugin URI:        https://theeventscalendar.com/extensions/---the-extension-article-url---/
- * GitHub Plugin URI: https://github.com/mt-support/tribe-ext-extension-template
+ * Plugin Name:       The Events Calendar Pro Extension: Daystrip
+ * Plugin URI:        https://theeventscalendar.com/extensions/daystrip/
+ * GitHub Plugin URI: https://github.com/mt-support/tribe-ext-daystrip
  * Description:       [Extension Description]
  * Version:           1.0.0
- * Extension Class:   Tribe\Extensions\Example\Main
+ * Extension Class:   Tribe\Extensions\Daystrip\Main
  * Author:            Modern Tribe, Inc.
  * Author URI:        http://m.tri.be/1971
  * License:           GPL version 3 or any later version
@@ -23,7 +23,7 @@
  *     GNU General Public License for more details.
  */
 
-namespace Tribe\Extensions\Example;
+namespace Tribe\Extensions\Daystrip;
 
 use Tribe__Autoloader;
 use Tribe__Dependency;
@@ -110,7 +110,7 @@ if (
 		 *
 		 * TODO: Remove if not using Settings.
 		 *
-		 * @see \Tribe\Extensions\Example\Settings::set_options_prefix()
+		 * @see \Tribe\Extensions\Daystrip\Settings::set_options_prefix()
 		 *
 		 * @return string
 		 */
@@ -156,6 +156,9 @@ if (
 
 			// Insert filter and action hooks here
 			add_filter( 'thing_we_are_filtering', [ $this, 'my_custom_function' ] );
+
+			wp_enqueue_style( 'tribe-ext-daystrip',  plugin_dir_url( __FILE__ ) . 'src/style.css' );
+			add_action( 'tribe_template_after_include:events/day/top-bar', [ $this, 'daystrip' ], 10, 3 );
 		}
 
 		/**
@@ -217,7 +220,7 @@ if (
 		 */
 		private function is_using_compatible_view_version() {
 			// @TODO: Set the required views version, then remove this comment.
-			$view_required_version = 1;
+			$view_required_version = 2;
 
 			$meets_req = true;
 
@@ -347,6 +350,55 @@ if (
 		 */
 		public function my_custom_function() {
 			// do your custom stuff
+		}
+
+		public function daystrip( $file, $name, $template ) {
+
+			$days_to_show = 9;
+
+			$default_date        = $template->get( 'today' );
+			$selected_date_value = $template->get( [ 'bar', 'date' ], $default_date );
+
+			if ( empty( $selected_date_value ) ) {
+				$selected_date_value = $default_date;
+			}
+
+			// Choosing the starting date for the array and formatting it
+			$starting_date = date('Y-m-d', strtotime($selected_date_value . ' -' . intdiv( $days_to_show, 2 ) . ' days'));
+
+			// Creating and filling the array
+			$days = [];
+			for( $i = 0; $i <= $days_to_show; $i++ ) {
+				$days[] = date('Y-m-d', strtotime($starting_date . ' +' . $i . ' days'));
+			}
+
+//			var_dump($days);
+
+			// Setting up the width for the boxes
+			$dayWidth = 100 / count( $days );
+
+			$html = "";
+			$html .= '<div class="tribe-daystrip-container">';
+
+			foreach( $days as $day ) {
+				$dayonly = date_create( $day );
+				$html .= '<div class="tribe-daystrip-day" style="width:' . $dayWidth . '%;">';
+				$html .= '<a href="';
+				$html .= tribe_events_get_url();
+				$html .= $day;
+				$html .= '">';
+				$html .= '<span class="tribe-daystrip-shortday">';
+				$html .= strtoupper( substr( date_format( $dayonly, 'D' ), 0, 2 ) );
+				$html .= '</span>';
+				$html .= '<span class="tribe-daystrip-date">';
+				$html .= date_format( $dayonly, 'd' );
+				$html .= '</span>';
+				$html .= '</a>';
+				$html .= '</div>';
+			}
+
+			echo $html;
+
 		}
 
 	} // end class
