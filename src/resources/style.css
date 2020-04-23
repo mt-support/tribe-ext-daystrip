@@ -1,14 +1,13 @@
 .tribe-events-header .tribe-daystrip-container {
     width: 100%;
-    /*border: 1px solid #000;*/
     line-height: 1.1;
     margin-bottom: 1em;
 }
 .tribe-events-header .tribe-daystrip-container .tribe-daystrip-day {
-    /*border: 1px solid #d3d3d3;*/
     text-align: center;
     display: inline-block;
-    padding: 10px 0;
+    padding: 10px 5px;
+    word-wrap: normal;
 }
 .tribe-events-header .tribe-daystrip-container .tribe-daystrip-day:nth-child(n+2) {
     border-left: 1px solid #eee;
