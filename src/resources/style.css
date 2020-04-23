@@ -1,7 +1,6 @@
 .tribe-events-header .tribe-daystrip-container {
-    width: 100%;
     line-height: 1.1;
-    margin-bottom: 1em;
+    flex: auto;
 }
 .tribe-events-header .tribe-daystrip-container .tribe-daystrip-day {
     text-align: center;

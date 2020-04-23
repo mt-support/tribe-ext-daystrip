@@ -26,7 +26,6 @@
 namespace Tribe\Extensions\Daystrip;
 
 use Tribe__Autoloader;
-use Tribe__Dependency;
 use Tribe__Extension;
 
 // Do not load unless Tribe Common is fully loaded and our class does not yet exist.
@@ -105,7 +104,7 @@ if (
 			$this->get_settings();
 
 			wp_enqueue_style( 'tribe-ext-daystrip',  plugin_dir_url( __FILE__ ) . 'src/resources/style.css' );
-			add_action( 'tribe_template_after_include:events/day/top-bar', [ $this, 'daystrip' ], 10, 3 );
+			add_action( 'tribe_template_after_include:events/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
 		}
 
 		/**
@@ -255,17 +254,24 @@ if (
 		public function daystrip( $file, $name, $template ) {
 
 			$options = $this->get_all_options();
-			//echo $options['daystrip_number_of_days'];
+
 			$days_to_show = (int)$options['number_of_days'];
-			$day_name_length = (int)$options['length_of_day_name'];
 
 			// If out of range, then set to default.
 			if ( $days_to_show < 3 || $days_to_show > 31 ) {
 				$days_to_show = 9;
 			}
 
+			$day_name_length = (int)$options['length_of_day_name'];
+
+			// If full width, add the necessary CSS
+			$full_width = $options['full_width'];
+			if ( $full_width ) {
+				$full_width = 'style="width: 100%; margin-top: 1em;"';
+			}
+
 			// Getting today's date
-			$default_date        = $template->get( 'today' );
+			$default_date = $template->get( 'today' );
 
 			// Getting selected date
 			$selected_date_value = $template->get( [ 'bar', 'date' ], $default_date );
@@ -286,8 +292,9 @@ if (
 			// Setting up the width for the boxes
 			$dayWidth = 100 / count( $days );
 
+
 			$html = "";
-			$html .= '<div class="tribe-daystrip-container">';
+			$html .= '<div class="tribe-daystrip-container"' . $full_width . '>';
 
 			// Going through the array and setting up the strip
 			foreach( $days as $day ) {

@@ -213,6 +213,12 @@ if ( ! class_exists( Settings::class ) ) {
 					'size'            => 'small',
 					'default'         => 2,
 				],
+				'full_width' => [
+					'type'            => 'checkbox_bool',
+					'label'           => esc_html__( 'Full width strip?', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'By default and if it fits, the strip appears next to the datepicker on the right. If you set it to full width, then it will move below the datepicker.', 'tribe-ext-daystrip' ) ),
+					'validation_type' => 'boolean',
+				],
 			];
 
 			$this->settings_helper->add_fields(
