@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: The Events Calendar Pro Extension: Daystrip\n"
-"POT-Creation-Date: 2020-04-23 10:42+0200\n"
+"POT-Creation-Date: 2020-04-23 11:50+0200\n"
 "PO-Revision-Date: 2020-04-23 10:42+0200\n"
 "Last-Translator: Andras Guseo <aguseo@gmail.com>\n"
 "Language-Team: Andras Guseo <aguseo@gmail.com>\n"
@@ -16,53 +16,68 @@ msgstr ""
 "X-Poedit-WPHeader: tribe-ext-daystrip.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
-#: src/Settings.php:224
+#: src/Settings.php:202
 msgid "Number of days to show on the day strip"
 msgstr ""
 
-#: src/Settings.php:225
+#: src/Settings.php:203
 msgid ""
 "Enter the number of days to be shown on the daystrip. Best is if it is an "
 "odd number, and bigger than 2."
 msgstr ""
 
-#: src/Settings.php:268
-msgctxt "Settings header"
-msgid "Daystrip Extension Setup"
+#: src/Settings.php:210
+msgid "Length of the day name"
 msgstr ""
 
-#: src/Settings.php:271
-msgctxt "Settings"
-msgid "Some text here about this settings section."
+#: src/Settings.php:211
+msgid ""
+"Defines how long the day name should be, e.g. if set to 2 then day names "
+"will be like Mo, Tu, etc."
+msgstr ""
+
+#: src/Settings.php:218
+msgid "Full width strip?"
+msgstr ""
+
+#: src/Settings.php:219
+msgid ""
+"By default and if it fits, the strip appears next to the datepicker on the "
+"right. If you set it to full width, then it will move below the datepicker."
+msgstr ""
+
+#: src/Settings.php:258
+msgctxt "Settings header"
+msgid "Daystrip Extension Settings"
 msgstr ""
 
 #: src/Settings_Helper.php:130
 msgid "Miscellaneous Settings"
 msgstr ""
 
-#: tribe-ext-daystrip.php:152
+#: tribe-ext-daystrip.php:126
 #, php-format
 msgid ""
 "%s requires PHP version %s or newer to work. Please contact your website "
 "host and inquire about updating PHP."
 msgstr ""
 
-#: tribe-ext-daystrip.php:213
+#: tribe-ext-daystrip.php:181
 msgctxt "name of view"
 msgid "Legacy Views"
 msgstr ""
 
-#: tribe-ext-daystrip.php:215
+#: tribe-ext-daystrip.php:183
 msgctxt "name of view"
 msgid "New (V2) Views"
 msgstr ""
 
-#: tribe-ext-daystrip.php:227
+#: tribe-ext-daystrip.php:195
 #, php-format
 msgid ""
 "%1$s requires the \"%2$s\" so this extension's code will not run until this "
@@ -79,7 +94,7 @@ msgid "https://theeventscalendar.com/extensions/daystrip/"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "Adds a day strip at the top of the Day View"
+msgid "Adds a day strip at the top of the Day View."
 msgstr ""
 
 #. Author of the plugin/theme
