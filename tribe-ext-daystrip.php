@@ -230,17 +230,6 @@ if (
 		}
 
 		/**
-		 * Getting this extension's `daystrip_number_of_days` option value.
-		 *
-		 * @return mixed
-		 */
-		public function get_daystrip_number_of_days() {
-			$settings = $this->get_settings();
-
-			return $settings->get_option( 'daystrip_number_of_days', '9' );
-		}
-
-		/**
 		 * Get all of this extension's options.
 		 *
 		 * @return array
@@ -251,7 +240,7 @@ if (
 			return $settings->get_all_options();
 		}
 
-		public function daystrip( $file, $name, $template ) {
+		public function daystrip( $template ) {
 
 			$options = $this->get_all_options();
 
