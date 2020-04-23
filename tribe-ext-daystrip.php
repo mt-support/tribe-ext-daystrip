@@ -3,7 +3,7 @@
  * Plugin Name:       The Events Calendar Pro Extension: Daystrip
  * Plugin URI:        https://theeventscalendar.com/extensions/daystrip/
  * GitHub Plugin URI: https://github.com/mt-support/tribe-ext-daystrip
- * Description:       Adds a day strip at the top of the Day View
+ * Description:       Adds a day strip at the top of the Day View.
  * Version:           1.0.0
  * Extension Class:   Tribe\Extensions\Daystrip\Main
  * Author:            Modern Tribe, Inc.
@@ -240,7 +240,7 @@ if (
 			return $settings->get_all_options();
 		}
 
-		public function daystrip( $template ) {
+		public function daystrip( $file, $name, $template ) {
 
 			$options = $this->get_all_options();
 
