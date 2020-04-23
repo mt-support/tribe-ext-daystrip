@@ -50,65 +50,18 @@ if (
 		private $settings;
 
 		/**
-		 * Is Events Calendar PRO active. If yes, we will add some extra functionality.
-		 *
-		 * @return bool
-		 */
-		public $ecp_active = false;
-
-		/**
 		 * Setup the Extension's properties.
 		 *
 		 * This always executes even if the required plugins are not present.
 		 */
 		public function construct() {
-			// Dependency requirements and class properties can be defined here.
-
-			/**
-			 * Examples:
-			 * All these version numbers are the ones on or after November 16, 2016, but you could remove the version
-			 * number, as it's an optional parameter. Know that your extension code will not run at all (we won't even
-			 * get this far) if you are not running The Events Calendar 4.3.3+ or Event Tickets 4.3.3+, as that is where
-			 * the Tribe__Extension class exists, which is what we are extending.
-			 *
-			 * If using `tribe()`, such as with `Tribe__Dependency`, require TEC/ET version 4.4+ (January 9, 2017).
-			 */
-			// $this->add_required_plugin( 'Tribe__Tickets__Main', '4.4' );
-			// $this->add_required_plugin( 'Tribe__Tickets_Plus__Main', '4.3.3' );
-			// $this->add_required_plugin( 'Tribe__Events__Main', '4.4' );
-			// $this->add_required_plugin( 'Tribe__Events__Pro__Main', '4.3.3' );
-			// $this->add_required_plugin( 'Tribe__Events__Community__Main', '4.3.2' );
-			// $this->add_required_plugin( 'Tribe__Events__Community__Tickets__Main', '4.3.2' );
-			// $this->add_required_plugin( 'Tribe__Events__Filterbar__View', '4.3.3' );
-			// $this->add_required_plugin( 'Tribe__Events__Tickets__Eventbrite__Main', '4.3.2' );
-			// $this->add_required_plugin( 'Tribe_APM', '4.4' );
-
-			// Conditionally-require Events Calendar PRO. If it is active, run an extra bit of code.
-			add_action( 'tribe_plugins_loaded', [ $this, 'detect_tec_pro' ], 0 );
-		}
-
-		/**
-		 * Check required plugins after all Tribe plugins have loaded.
-		 *
-		 * Useful for conditionally-requiring a Tribe plugin, whether to add extra functionality
-		 * or require a certain version but only if it is active.
-		 */
-		public function detect_tec_pro() {
-			/** @var Tribe__Dependency $dep */
-			$dep = tribe( Tribe__Dependency::class );
-
-			if ( $dep->is_plugin_active( 'Tribe__Events__Pro__Main' ) ) {
-				$this->add_required_plugin( 'Tribe__Events__Pro__Main' );
-				$this->ecp_active = true;
-			}
+			$this->add_required_plugin( 'Tribe__Events__Pro__Main', '5.0' );
 		}
 
 		/**
 		 * Get this plugin's options prefix.
 		 *
 		 * Settings_Helper will append a trailing underscore before each option.
-		 *
-		 * TODO: Remove if not using Settings.
 		 *
 		 * @see \Tribe\Extensions\Daystrip\Settings::set_options_prefix()
 		 *
@@ -151,12 +104,6 @@ if (
 
 			$this->get_settings();
 
-			// TODO: Just a test. Remove this.
-			$this->testing_hello_world();
-
-			// Insert filter and action hooks here
-			add_filter( 'thing_we_are_filtering', [ $this, 'my_custom_function' ] );
-
 			wp_enqueue_style( 'tribe-ext-daystrip',  plugin_dir_url( __FILE__ ) . 'src/resources/style.css' );
 			add_action( 'tribe_template_after_include:events/day/top-bar', [ $this, 'daystrip' ], 10, 3 );
 		}
@@ -165,24 +112,6 @@ if (
 		 * Check if we have a sufficient version of PHP. Admin notice if we don't and user should see it.
 		 *
 		 * @link https://theeventscalendar.com/knowledgebase/php-version-requirement-changes/ All extensions require PHP 5.6+.
-		 *
-		 * Delete this paragraph and the non-applicable comments below.
-		 * Make sure to match the readme.txt header.
-		 *
-		 * Note that older version syntax errors may still throw fatals even
-		 * if you implement this PHP version checking so QA it at least once.
-		 *
-		 * @link https://secure.php.net/manual/en/migration56.new-features.php
-		 * 5.6: Variadic Functions, Argument Unpacking, and Constant Expressions
-		 *
-		 * @link https://secure.php.net/manual/en/migration70.new-features.php
-		 * 7.0: Return Types, Scalar Type Hints, Spaceship Operator, Constant Arrays Using define(), Anonymous Classes, intdiv(), and preg_replace_callback_array()
-		 *
-		 * @link https://secure.php.net/manual/en/migration71.new-features.php
-		 * 7.1: Class Constant Visibility, Nullable Types, Multiple Exceptions per Catch Block, `iterable` Pseudo-Type, and Negative String Offsets
-		 *
-		 * @link https://secure.php.net/manual/en/migration72.new-features.php
-		 * 7.2: `object` Parameter and Covariant Return Typing, Abstract Function Override, and Allow Trailing Comma for Grouped Namespaces
 		 *
 		 * @return bool
 		 */
@@ -195,13 +124,9 @@ if (
 					&& current_user_can( 'activate_plugins' )
 				) {
 					$message = '<p>';
-
 					$message .= sprintf( __( '%s requires PHP version %s or newer to work. Please contact your website host and inquire about updating PHP.', 'tribe-ext-daystrip' ), $this->get_name(), $php_required_version );
-
 					$message .= sprintf( ' <a href="%1$s">%1$s</a>', 'https://wordpress.org/about/requirements/' );
-
 					$message .= '</p>';
-
 					tribe_notice( 'tribe-ext-daystrip-php-version', $message, [ 'type' => 'error' ] );
 				}
 
@@ -214,12 +139,9 @@ if (
 		/**
 		 * Check if we have the required TEC view. Admin notice if we don't and user should see it.
 		 *
-		 * @TODO Remove method if extension doesn't require The Events Calendar or works with both V1 and V2 views.
-		 *
 		 * @return bool
 		 */
 		private function is_using_compatible_view_version() {
-			// @TODO: Set the required views version, then remove this comment.
 			$view_required_version = 2;
 
 			$meets_req = true;
@@ -291,8 +213,6 @@ if (
 		/**
 		 * Use Tribe Autoloader for all class files within this namespace in the 'src' directory.
 		 *
-		 * TODO: Delete this method and its usage throughout this file if there is no `src` directory, such as if there are no settings being added to the admin UI.
-		 *
 		 * @return Tribe__Autoloader
 		 */
 		public function class_loader() {
@@ -311,27 +231,14 @@ if (
 		}
 
 		/**
-		 * TODO: Testing Hello World. Delete this for your new extension.
-		 */
-		public function testing_hello_world() {
-			$message = sprintf( '<p>Hello World from %s. Make sure to remove this in your own new extension.</p>', '<strong>' . $this->get_name() . '</strong>' );
-
-			$message .= sprintf( '<p><strong>Bonus!</strong> Get one of our own custom option values: %s</p><p><em>See the code to learn more.</em></p>', $this->get_daystrip_number_of_days() );
-
-			tribe_notice( 'tribe-ext-daystrip-hello-world', $message, [ 'type' => 'info' ] );
-		}
-
-		/**
-		 * Demonstration of getting this extension's `a_setting` option value.
-		 *
-		 * TODO: Rework or remove this.
+		 * Getting this extension's `daystrip_number_of_days` option value.
 		 *
 		 * @return mixed
 		 */
 		public function get_daystrip_number_of_days() {
 			$settings = $this->get_settings();
 
-			return $settings->get_option( 'daystrip_number_of_days', 'https://theeventscalendar.com/' );
+			return $settings->get_option( 'daystrip_number_of_days', '9' );
 		}
 
 		/**
@@ -345,23 +252,21 @@ if (
 			return $settings->get_all_options();
 		}
 
-		/**
-		 * Include a docblock for every class method and property.
-		 */
-		public function my_custom_function() {
-			// do your custom stuff
-		}
-
 		public function daystrip( $file, $name, $template ) {
 
+			$options = $this
 			$days_to_show = (int)$this->get_daystrip_number_of_days();
+			$day_name_length = (int)$this->get
 
 			// If out of range, then set to default.
 			if ( $days_to_show < 3 || $days_to_show > 31 ) {
 				$days_to_show = 9;
 			}
 
+			// Getting today's date
 			$default_date        = $template->get( 'today' );
+
+			// Getting selected date
 			$selected_date_value = $template->get( [ 'bar', 'date' ], $default_date );
 
 			if ( empty( $selected_date_value ) ) {
@@ -377,41 +282,50 @@ if (
 				$days[] = date('Y-m-d', strtotime($starting_date . ' +' . $i . ' days'));
 			}
 
-//			var_dump($days);
-
 			// Setting up the width for the boxes
 			$dayWidth = 100 / count( $days );
 
 			$html = "";
 			$html .= '<div class="tribe-daystrip-container">';
 
+			// Going through the array and setting up the strip
 			foreach( $days as $day ) {
 				// Making a date object
 				$date = date_create( $day );
 				$class = "";
 
-//				echo $day;
-//				echo $default_date;
-//				echo strtotime( $day ) . "<br>" . strtotime( $default_date) . "<br>";
-
+				// Setting class for past, today, and future events
 				if ( strtotime( $day ) < strtotime( $default_date ) ) {
 					$class = 'tribe-daystrip-past';
 				}
+				elseif ( strtotime( $day ) == strtotime( $default_date ) ) {
+					$class = 'tribe-daystrip-today';
+				}
+				elseif ( strtotime( $day ) > strtotime( $default_date ) ) {
+					$class = 'tribe-daystrip-future';
+				}
+				// Setting class for selected day
 				if ( strtotime( $day ) == strtotime( $selected_date_value ) ) {
 					$class .= ' current';
 				}
 
+				// Putting together markup
+				// Opening
 				$html .= '<div class="tribe-daystrip-day '. $class . '" style="width:' . $dayWidth . '%;">';
+				// URL
 				$html .= '<a href="';
 				$html .= tribe_events_get_url();
 				$html .= $day;
 				$html .= '">';
+				// Name of day
 				$html .= '<span class="tribe-daystrip-shortday">';
-				$html .= strtoupper( substr( date_format( $date, 'D' ), 0, 2 ) );
+				$html .= strtoupper( substr( date_format( $date, 'l' ), 0, 3 ) );
 				$html .= '</span>';
+				// Date of day
 				$html .= '<span class="tribe-daystrip-date">';
 				$html .= date_format( $date, 'd' );
 				$html .= '</span>';
+				// Closing
 				$html .= '</a>';
 				$html .= '</div>';
 			}

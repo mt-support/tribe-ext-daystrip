@@ -29,17 +29,12 @@ if ( ! class_exists( Settings::class ) ) {
 		/**
 		 * Settings constructor.
 		 *
-		 * TODO: Update this entire class for your needs, or remove the entire `src` directory this file is in and do not load it in the main plugin file.
-		 *
 		 * @param string $options_prefix Recommended: the plugin text domain, with hyphens converted to underscores.
 		 */
 		public function __construct( $options_prefix ) {
 			$this->settings_helper = new Settings_Helper();
 
 			$this->set_options_prefix( $options_prefix );
-
-			// Remove settings specific to Google Maps
-			add_action( 'admin_init', [ $this, 'remove_settings' ] );
 
 			// Add settings specific to OSM
 			add_action( 'admin_init', [ $this, 'add_settings' ] );
@@ -193,39 +188,30 @@ if ( ! class_exists( Settings::class ) ) {
 		}
 
 		/**
-		 * Here is an example of removing settings from Events > Settings > General tab > "Map Settings" section
-		 * that are specific to Google Maps.
-		 */
-		public function remove_settings() {
-			// "Enable Google Maps" checkbox
-			$this->settings_helper->remove_field( 'embedGoogleMaps', 'general' );
-			// "Map view search distance limit" (default of 25)
-			$this->settings_helper->remove_field( 'geoloc_default_geofence', 'general' );
-			// "Google Maps default zoom level" (0-21, default of 10)
-			$this->settings_helper->remove_field( 'embedGoogleMapsZoom', 'general' );
-		}
-
-		/**
 		 * Adds a new section of fields to Events > Settings > General tab, appearing after the "Map Settings" section
 		 * and before the "Miscellaneous Settings" section.
-		 *
-		 * TODO: Move it to where you want and update this docblock. If you like it here, just delete this TODO.
 		 */
 		public function add_settings() {
 			$fields = [
-				// TODO: Settings heading start. Remove this element if not needed. Also remove the corresponding `get_example_intro_text()` method below.
 				'Example'   => [
 					'type' => 'html',
 					'html' => $this->get_example_intro_text(),
 				],
-				// TODO: Settings heading end.
-				'daystrip_number_of_days' => [ // TODO
+				'daystrip_number_of_days' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Number of days to show on the day strip', 'tribe-ext-daystrip' ),
 					'tooltip'         => sprintf( esc_html__( 'Enter the number of days to be shown on the daystrip. Best is if it is an odd number, and bigger than 2.', 'tribe-ext-daystrip' ) ),
 					'validation_type' => 'positive_int',
 					'size'            => 'small',
 					'default'         => 9,
+				],
+				'daystrip_length_of_day_name' => [
+					'type'            => 'text',
+					'label'           => esc_html__( 'Length of the day name', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'Defines how long the day name should be, e.g. if set to 2 then day names will be like Mo, Tu, etc.', 'tribe-ext-daystrip' ) ),
+					'validation_type' => 'positive_int',
+					'size'            => 'small',
+					'default'         => 2,
 				],
 			];
 
@@ -260,17 +246,10 @@ if ( ! class_exists( Settings::class ) ) {
 		/**
 		 * Here is an example of getting some HTML for the Settings Header.
 		 *
-		 * TODO: Delete this method if you do not need a heading for your settings. Also remove the corresponding element in the the $fields array in the `add_settings()` method above.
-		 *
 		 * @return string
 		 */
 		private function get_example_intro_text() {
-			$result = '<h3>' . esc_html_x( 'Daystrip Extension Setup', 'Settings header', 'tribe-ext-daystrip' ) . '</h3>';
-			$result .= '<div style="margin-left: 20px;">';
-			$result .= '<p>';
-			$result .= esc_html_x( 'Some text here about this settings section.', 'Settings', 'tribe-ext-daystrip' );
-			$result .= '</p>';
-			$result .= '</div>';
+			$result = '<h3>' . esc_html_x( 'Daystrip Extension Settings', 'Settings header', 'tribe-ext-daystrip' ) . '</h3>';
 
 			return $result;
 		}
