@@ -1,0 +1,31 @@
+.tribe-events-header .tribe-daystrip-container {
+    width: 100%;
+    /*border: 1px solid #000;*/
+    line-height: 1.1;
+    margin-bottom: 1em;
+}
+.tribe-events-header .tribe-daystrip-container .tribe-daystrip-day {
+    /*border: 1px solid #d3d3d3;*/
+    text-align: center;
+    display: inline-block;
+    padding: 10px 0;
+}
+.tribe-events-header .tribe-daystrip-container .tribe-daystrip-day:nth-child(n+2) {
+    border-left: 1px solid #eee;
+}
+.tribe-daystrip-day span {
+    display: block;
+    text-align: center;
+}
+.tribe-daystrip-shortday {
+    font-size: 0.7em;
+}
+.tribe-daystrip-date {
+
+}
+.tribe-events-header .tribe-daystrip-day.tribe-daystrip-past a {
+    color: #898b93;
+}
+.tribe-daystrip-day.current {
+    background-color: #eee;
+}

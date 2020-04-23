@@ -219,18 +219,20 @@ if ( ! class_exists( Settings::class ) ) {
 					'html' => $this->get_example_intro_text(),
 				],
 				// TODO: Settings heading end.
-				'a_setting' => [ // TODO
+				'daystrip_number_of_days' => [ // TODO
 					'type'            => 'text',
-					'label'           => esc_html__( 'xxx try this', 'tribe-ext-extension-template' ),
-					'tooltip'         => sprintf( esc_html__( 'Enter your custom URL, including "http://" or "https://", for example %s.', 'tribe-ext-extension-template' ), '<code>https://wpshindig.com/events/</code>' ),
-					'validation_type' => 'html',
+					'label'           => esc_html__( 'Number of days to show on the day strip', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'Enter the number of days to be shown on the daystrip. Best is if it is an odd number, and bigger than 2.', 'tribe-ext-daystrip' ) ),
+					'validation_type' => 'positive_int',
+					'size'            => 'small',
+					'default'         => 9,
 				],
 			];
 
 			$this->settings_helper->add_fields(
 				$this->prefix_settings_field_keys( $fields ),
-				'general',
-				'tribeEventsMiscellaneousTitle',
+				'display',
+				'tribeEventsDateFormatSettingsTitle',
 				true
 			);
 		}
@@ -263,10 +265,10 @@ if ( ! class_exists( Settings::class ) ) {
 		 * @return string
 		 */
 		private function get_example_intro_text() {
-			$result = '<h3>' . esc_html_x( 'Daystrip Extension Setup', 'Settings header', 'tribe-ext-extension-template' ) . '</h3>';
+			$result = '<h3>' . esc_html_x( 'Daystrip Extension Setup', 'Settings header', 'tribe-ext-daystrip' ) . '</h3>';
 			$result .= '<div style="margin-left: 20px;">';
 			$result .= '<p>';
-			$result .= esc_html_x( 'Some text here about this settings section.', 'Settings', 'tribe-ext-extension-template' );
+			$result .= esc_html_x( 'Some text here about this settings section.', 'Settings', 'tribe-ext-daystrip' );
 			$result .= '</p>';
 			$result .= '</div>';
 

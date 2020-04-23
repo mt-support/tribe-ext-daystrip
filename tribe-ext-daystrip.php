@@ -3,14 +3,14 @@
  * Plugin Name:       The Events Calendar Pro Extension: Daystrip
  * Plugin URI:        https://theeventscalendar.com/extensions/daystrip/
  * GitHub Plugin URI: https://github.com/mt-support/tribe-ext-daystrip
- * Description:       [Extension Description]
+ * Description:       Adds a day strip at the top of the Day View
  * Version:           1.0.0
  * Extension Class:   Tribe\Extensions\Daystrip\Main
  * Author:            Modern Tribe, Inc.
  * Author URI:        http://m.tri.be/1971
  * License:           GPL version 3 or any later version
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain:       tribe-ext-extension-template
+ * Text Domain:       tribe-ext-daystrip
  *
  *     This plugin is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -115,7 +115,7 @@ if (
 		 * @return string
 		 */
 		private function get_options_prefix() {
-			return (string) str_replace( '-', '_', 'tribe-ext-extension-template' );
+			return (string) str_replace( '-', '_', 'tribe-ext-daystrip' );
 		}
 
 		/**
@@ -136,8 +136,8 @@ if (
 		 */
 		public function init() {
 			// Load plugin textdomain
-			// Don't forget to generate the 'languages/tribe-ext-extension-template.pot' file
-			load_plugin_textdomain( 'tribe-ext-extension-template', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+			// Don't forget to generate the 'languages/tribe-ext-daystrip.pot' file
+			load_plugin_textdomain( 'tribe-ext-daystrip', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 
 			if ( ! $this->php_version_check() ) {
 				return;
@@ -157,7 +157,7 @@ if (
 			// Insert filter and action hooks here
 			add_filter( 'thing_we_are_filtering', [ $this, 'my_custom_function' ] );
 
-			wp_enqueue_style( 'tribe-ext-daystrip',  plugin_dir_url( __FILE__ ) . 'src/style.css' );
+			wp_enqueue_style( 'tribe-ext-daystrip',  plugin_dir_url( __FILE__ ) . 'src/resources/style.css' );
 			add_action( 'tribe_template_after_include:events/day/top-bar', [ $this, 'daystrip' ], 10, 3 );
 		}
 
@@ -196,13 +196,13 @@ if (
 				) {
 					$message = '<p>';
 
-					$message .= sprintf( __( '%s requires PHP version %s or newer to work. Please contact your website host and inquire about updating PHP.', 'tribe-ext-extension-template' ), $this->get_name(), $php_required_version );
+					$message .= sprintf( __( '%s requires PHP version %s or newer to work. Please contact your website host and inquire about updating PHP.', 'tribe-ext-daystrip' ), $this->get_name(), $php_required_version );
 
 					$message .= sprintf( ' <a href="%1$s">%1$s</a>', 'https://wordpress.org/about/requirements/' );
 
 					$message .= '</p>';
 
-					tribe_notice( 'tribe-ext-extension-template-php-version', $message, [ 'type' => 'error' ] );
+					tribe_notice( 'tribe-ext-daystrip-php-version', $message, [ 'type' => 'error' ] );
 				}
 
 				return false;
@@ -257,9 +257,9 @@ if (
 				&& current_user_can( 'activate_plugins' )
 			) {
 				if ( 1 === $view_required_version ) {
-					$view_name = _x( 'Legacy Views', 'name of view', 'tribe-ext-extension-template' );
+					$view_name = _x( 'Legacy Views', 'name of view', 'tribe-ext-daystrip' );
 				} else {
-					$view_name = _x( 'New (V2) Views', 'name of view', 'tribe-ext-extension-template' );
+					$view_name = _x( 'New (V2) Views', 'name of view', 'tribe-ext-daystrip' );
 				}
 
 				$view_name = sprintf(
@@ -272,14 +272,14 @@ if (
 				$message = sprintf(
 					__(
 						'%1$s requires the "%2$s" so this extension\'s code will not run until this requirement is met. You may want to deactivate this extension or visit its homepage to see if there are any updates available.',
-						'tribe-ext-extension-template'
+						'tribe-ext-daystrip'
 					),
 					$this->get_name(),
 					$view_name
 				);
 
 				tribe_notice(
-					'tribe-ext-extension-template-view-mismatch',
+					'tribe-ext-daystrip-view-mismatch',
 					'<p>' . $message . '</p>',
 					[ 'type' => 'error' ]
 				);
@@ -316,9 +316,9 @@ if (
 		public function testing_hello_world() {
 			$message = sprintf( '<p>Hello World from %s. Make sure to remove this in your own new extension.</p>', '<strong>' . $this->get_name() . '</strong>' );
 
-			$message .= sprintf( '<p><strong>Bonus!</strong> Get one of our own custom option values: %s</p><p><em>See the code to learn more.</em></p>', $this->get_one_custom_option() );
+			$message .= sprintf( '<p><strong>Bonus!</strong> Get one of our own custom option values: %s</p><p><em>See the code to learn more.</em></p>', $this->get_daystrip_number_of_days() );
 
-			tribe_notice( 'tribe-ext-extension-template-hello-world', $message, [ 'type' => 'info' ] );
+			tribe_notice( 'tribe-ext-daystrip-hello-world', $message, [ 'type' => 'info' ] );
 		}
 
 		/**
@@ -328,10 +328,10 @@ if (
 		 *
 		 * @return mixed
 		 */
-		public function get_one_custom_option() {
+		public function get_daystrip_number_of_days() {
 			$settings = $this->get_settings();
 
-			return $settings->get_option( 'a_setting', 'https://theeventscalendar.com/' );
+			return $settings->get_option( 'daystrip_number_of_days', 'https://theeventscalendar.com/' );
 		}
 
 		/**
@@ -354,7 +354,12 @@ if (
 
 		public function daystrip( $file, $name, $template ) {
 
-			$days_to_show = 9;
+			$days_to_show = (int)$this->get_daystrip_number_of_days();
+
+			// If out of range, then set to default.
+			if ( $days_to_show < 3 || $days_to_show > 31 ) {
+				$days_to_show = 9;
+			}
 
 			$default_date        = $template->get( 'today' );
 			$selected_date_value = $template->get( [ 'bar', 'date' ], $default_date );
@@ -368,7 +373,7 @@ if (
 
 			// Creating and filling the array
 			$days = [];
-			for( $i = 0; $i <= $days_to_show; $i++ ) {
+			for( $i = 0; $i < $days_to_show; $i++ ) {
 				$days[] = date('Y-m-d', strtotime($starting_date . ' +' . $i . ' days'));
 			}
 
@@ -381,17 +386,31 @@ if (
 			$html .= '<div class="tribe-daystrip-container">';
 
 			foreach( $days as $day ) {
-				$dayonly = date_create( $day );
-				$html .= '<div class="tribe-daystrip-day" style="width:' . $dayWidth . '%;">';
+				// Making a date object
+				$date = date_create( $day );
+				$class = "";
+
+//				echo $day;
+//				echo $default_date;
+//				echo strtotime( $day ) . "<br>" . strtotime( $default_date) . "<br>";
+
+				if ( strtotime( $day ) < strtotime( $default_date ) ) {
+					$class = 'tribe-daystrip-past';
+				}
+				if ( strtotime( $day ) == strtotime( $selected_date_value ) ) {
+					$class .= ' current';
+				}
+
+				$html .= '<div class="tribe-daystrip-day '. $class . '" style="width:' . $dayWidth . '%;">';
 				$html .= '<a href="';
 				$html .= tribe_events_get_url();
 				$html .= $day;
 				$html .= '">';
 				$html .= '<span class="tribe-daystrip-shortday">';
-				$html .= strtoupper( substr( date_format( $dayonly, 'D' ), 0, 2 ) );
+				$html .= strtoupper( substr( date_format( $date, 'D' ), 0, 2 ) );
 				$html .= '</span>';
 				$html .= '<span class="tribe-daystrip-date">';
-				$html .= date_format( $dayonly, 'd' );
+				$html .= date_format( $date, 'd' );
 				$html .= '</span>';
 				$html .= '</a>';
 				$html .= '</div>';
