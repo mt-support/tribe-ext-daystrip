@@ -197,7 +197,7 @@ if ( ! class_exists( Settings::class ) ) {
 					'type' => 'html',
 					'html' => $this->get_example_intro_text(),
 				],
-				'daystrip_number_of_days' => [
+				'number_of_days' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Number of days to show on the day strip', 'tribe-ext-daystrip' ),
 					'tooltip'         => sprintf( esc_html__( 'Enter the number of days to be shown on the daystrip. Best is if it is an odd number, and bigger than 2.', 'tribe-ext-daystrip' ) ),
@@ -205,11 +205,11 @@ if ( ! class_exists( Settings::class ) ) {
 					'size'            => 'small',
 					'default'         => 9,
 				],
-				'daystrip_length_of_day_name' => [
+				'length_of_day_name' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Length of the day name', 'tribe-ext-daystrip' ),
 					'tooltip'         => sprintf( esc_html__( 'Defines how long the day name should be, e.g. if set to 2 then day names will be like Mo, Tu, etc.', 'tribe-ext-daystrip' ) ),
-					'validation_type' => 'positive_int',
+					'validation_type' => 'int',
 					'size'            => 'small',
 					'default'         => 2,
 				],

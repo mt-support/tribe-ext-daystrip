@@ -254,9 +254,10 @@ if (
 
 		public function daystrip( $file, $name, $template ) {
 
-			$options = $this
-			$days_to_show = (int)$this->get_daystrip_number_of_days();
-			$day_name_length = (int)$this->get
+			$options = $this->get_all_options();
+			//echo $options['daystrip_number_of_days'];
+			$days_to_show = (int)$options['number_of_days'];
+			$day_name_length = (int)$options['length_of_day_name'];
 
 			// If out of range, then set to default.
 			if ( $days_to_show < 3 || $days_to_show > 31 ) {
@@ -319,7 +320,7 @@ if (
 				$html .= '">';
 				// Name of day
 				$html .= '<span class="tribe-daystrip-shortday">';
-				$html .= strtoupper( substr( date_format( $date, 'l' ), 0, 3 ) );
+				$html .= strtoupper( substr( date_format( $date, 'l' ), 0, $day_name_length ) );
 				$html .= '</span>';
 				// Date of day
 				$html .= '<span class="tribe-daystrip-date">';
