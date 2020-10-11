@@ -301,6 +301,13 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			echo '</div>';
 		}
 
+		/**
+		 * Filters the URL to make it work with AJAX loading
+		 *
+		 * @param $html
+		 *
+		 * @return string|string[]
+		 */
 		function filter_day_link( $html ) {
 			$html = str_replace( 'rel="prev"', 'data-js="tribe-events-view-link"', $html );
 
