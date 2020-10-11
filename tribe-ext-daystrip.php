@@ -104,6 +104,7 @@ if (
 			$this->get_settings();
 
 			wp_enqueue_style( 'tribe-ext-daystrip',  plugin_dir_url( __FILE__ ) . 'src/resources/style.css' );
+			add_filter( 'tribe_the_day_link', [ $this, 'filter_day_link' ] );
 			add_action( 'tribe_template_after_include:events/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
 		}
 
@@ -281,9 +282,8 @@ if (
 			// Setting up the width for the boxes
 			$dayWidth = 100 / count( $days );
 
-
-			$html = "";
-			$html .= '<div class="tribe-daystrip-container"' . $full_width . '>';
+			// Opening the strip
+			echo '<div class="tribe-daystrip-container"' . $full_width . '>';
 
 			// Going through the array and setting up the strip
 			foreach( $days as $day ) {
@@ -306,30 +306,33 @@ if (
 					$class .= ' current';
 				}
 
-				// Putting together markup
+				// Echoing the day
 				// Opening
-				$html .= '<div class="tribe-daystrip-day '. $class . '" style="width:' . $dayWidth . '%;">';
-				// URL
-				$html .= '<a href="';
-				$html .= tribe_events_get_url();
-				$html .= $day;
-				$html .= '">';
-				// Name of day
-				$html .= '<span class="tribe-daystrip-shortday">';
-				$html .= strtoupper( substr( date_format( $date, 'l' ), 0, $day_name_length ) );
-				$html .= '</span>';
-				// Date of day
-				$html .= '<span class="tribe-daystrip-date">';
-				$html .= date_format( $date, 'd' );
-				$html .= '</span>';
-				// Closing
-				$html .= '</a>';
-				$html .= '</div>';
-			}
+				echo '<div class="tribe-daystrip-day '. $class . '" style="width:' . $dayWidth . '%;">';
 
-			echo $html;
+				// Text part of the URL
+				$linkt = '<span class="tribe-daystrip-shortday">';
+				$linkt .= strtoupper( substr( date_format( $date, 'l' ), 0, $day_name_length ) );
+				$linkt .= '</span>';
+				// Date of day
+				$linkt .= '<span class="tribe-daystrip-date">';
+				$linkt .= date_format( $date, 'd' );
+				$linkt .= '</span>';
+
+				// echoing the URL
+				tribe_the_day_link( $day, $linkt );
+
+				// Closing of the day
+				echo '</div>';
+			}
+			// Closing of the strip
+			echo '</div>';
 
 		}
 
+		function filter_day_link ( $html ) {
+			$html = str_replace( 'rel="prev"', 'data-js="tribe-events-view-link"', $html );
+			return $html;
+		}
 	} // end class
 } // end if class_exists check
