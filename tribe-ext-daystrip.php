@@ -253,6 +253,8 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				$days[] = date( 'Y-m-d', strtotime( $starting_date . ' +' . $i . ' days' ) );
 			}
 
+			$dates = $this->get_events_for_timeframe( $days[0], end($days ) );
+
 			// Setting up the width for the boxes
 			$dayWidth = 100 / count( $days );
 
@@ -278,6 +280,10 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 					$class .= ' current';
 				}
 
+				if ( in_array( $day, $dates ) ) {
+					$class .= ' has-event';
+				}
+
 				// Echoing the day
 				// Opening
 				echo '<div class="tribe-daystrip-day ' . $class . '" style="width:' . $dayWidth . '%;">';
@@ -291,8 +297,15 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				$linkt .= date_format( $date, 'd' );
 				$linkt .= '</span>';
 
+				if ( in_array( $day, $dates ) ) {
+					$linkt .= '<em
+								class="tribe-events-calendar-month__mobile-events-icon tribe-events-calendar-month__mobile-events-icon--event"
+								aria-label="'. esc_attr( $has_events_label ) . '"title="' . esc_attr( $has_events_label ) . '"></em>';
+				}
 				// echoing the URL
 				tribe_the_day_link( $day, $linkt );
+
+
 
 				// Closing of the day
 				echo '</div>';
@@ -312,6 +325,18 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			$html = str_replace( 'rel="prev"', 'data-js="tribe-events-view-link"', $html );
 
 			return $html;
+		}
+
+		function get_events_for_timeframe( $start_date, $end_date ) {
+			$args = [
+				'start_date' => $start_date,
+				'end_date'   => $end_date,
+			];
+			$events = tribe_get_events( $args );
+			foreach ( $events as $event ) {
+				$dates[] = date( 'Y-m-d', strtotime( $event->event_date ) );
+			}
+			return $dates;
 		}
 	} // end class
 } // end if class_exists check
