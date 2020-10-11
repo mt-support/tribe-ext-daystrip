@@ -259,7 +259,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			$dayWidth = 100 / count( $days );
 
 			// Opening the strip
-			echo '<div class="tribe-daystrip-container"' . $full_width . '>';
+			echo '<div class="tribe-daystrip-container tribe-common-b2"' . $full_width . '>';
 
 			// Going through the array and setting up the strip
 			foreach ( $days as $day ) {
