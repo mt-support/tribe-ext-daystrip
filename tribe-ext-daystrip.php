@@ -29,10 +29,7 @@ use Tribe__Autoloader;
 use Tribe__Extension;
 
 // Do not load unless Tribe Common is fully loaded and our class does not yet exist.
-if (
-	class_exists( 'Tribe__Extension' )
-	&& ! class_exists( Main::class )
-) {
+if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 	/**
 	 * Extension main class, class begins loading on init() function.
 	 */
@@ -62,9 +59,9 @@ if (
 		 *
 		 * Settings_Helper will append a trailing underscore before each option.
 		 *
+		 * @return string
 		 * @see \Tribe\Extensions\Daystrip\Settings::set_options_prefix()
 		 *
-		 * @return string
 		 */
 		private function get_options_prefix() {
 			return (string) str_replace( '-', '_', 'tribe-ext-daystrip' );
@@ -103,7 +100,7 @@ if (
 
 			$this->get_settings();
 
-			wp_enqueue_style( 'tribe-ext-daystrip',  plugin_dir_url( __FILE__ ) . 'src/resources/style.css' );
+			wp_enqueue_style( 'tribe-ext-daystrip', plugin_dir_url( __FILE__ ) . 'src/resources/style.css' );
 			add_filter( 'tribe_the_day_link', [ $this, 'filter_day_link' ] );
 			add_action( 'tribe_template_after_include:events/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
 		}
@@ -119,12 +116,12 @@ if (
 			$php_required_version = '5.6';
 
 			if ( version_compare( PHP_VERSION, $php_required_version, '<' ) ) {
-				if (
-					is_admin()
-					&& current_user_can( 'activate_plugins' )
-				) {
+				if ( is_admin() && current_user_can( 'activate_plugins' ) ) {
 					$message = '<p>';
-					$message .= sprintf( __( '%s requires PHP version %s or newer to work. Please contact your website host and inquire about updating PHP.', 'tribe-ext-daystrip' ), $this->get_name(), $php_required_version );
+					$message .= sprintf( __( '%s requires PHP version %s or newer to work. Please contact your website host and inquire about updating PHP.',
+					                         'tribe-ext-daystrip' ),
+					                     $this->get_name(),
+					                     $php_required_version );
 					$message .= sprintf( ' <a href="%1$s">%1$s</a>', 'https://wordpress.org/about/requirements/' );
 					$message .= '</p>';
 					tribe_notice( 'tribe-ext-daystrip-php-version', $message, [ 'type' => 'error' ] );
@@ -147,64 +144,43 @@ if (
 			$meets_req = true;
 
 			// Is V2 enabled?
-			if (
-				function_exists( 'tribe_events_views_v2_is_enabled' )
-				&& ! empty( tribe_events_views_v2_is_enabled() )
-			) {
+			if ( function_exists( 'tribe_events_views_v2_is_enabled' ) && ! empty( tribe_events_views_v2_is_enabled() ) ) {
 				$is_v2 = true;
 			} else {
 				$is_v2 = false;
 			}
 
 			// V1 compatibility check.
-			if (
-				1 === $view_required_version
-				&& $is_v2
-			) {
+			if ( 1 === $view_required_version && $is_v2 ) {
 				$meets_req = false;
 			}
 
 			// V2 compatibility check.
-			if (
-				2 === $view_required_version
-				&& ! $is_v2
-			) {
+			if ( 2 === $view_required_version && ! $is_v2 ) {
 				$meets_req = false;
 			}
 
 			// Notice, if should be shown.
-			if (
-				! $meets_req
-				&& is_admin()
-				&& current_user_can( 'activate_plugins' )
-			) {
+			if ( ! $meets_req && is_admin() && current_user_can( 'activate_plugins' ) ) {
 				if ( 1 === $view_required_version ) {
 					$view_name = _x( 'Legacy Views', 'name of view', 'tribe-ext-daystrip' );
 				} else {
 					$view_name = _x( 'New (V2) Views', 'name of view', 'tribe-ext-daystrip' );
 				}
 
-				$view_name = sprintf(
-					'<a href="%s">%s</a>',
-					esc_url( admin_url( 'edit.php?page=tribe-common&tab=display&post_type=tribe_events' ) ),
-					$view_name
-				);
+				$view_name = sprintf( '<a href="%s">%s</a>',
+				                      esc_url( admin_url( 'edit.php?page=tribe-common&tab=display&post_type=tribe_events' ) ),
+				                      $view_name );
 
 				// Translators: 1: Extension plugin name, 2: Name of required view, linked to Display tab.
-				$message = sprintf(
-					__(
-						'%1$s requires the "%2$s" so this extension\'s code will not run until this requirement is met. You may want to deactivate this extension or visit its homepage to see if there are any updates available.',
-						'tribe-ext-daystrip'
-					),
-					$this->get_name(),
-					$view_name
-				);
+				$message = sprintf( __( '%1$s requires the "%2$s" so this extension\'s code will not run until this requirement is met. You may want to deactivate this extension or visit its homepage to see if there are any updates available.',
+				                        'tribe-ext-daystrip' ),
+				                    $this->get_name(),
+				                    $view_name );
 
-				tribe_notice(
-					'tribe-ext-daystrip-view-mismatch',
-					'<p>' . $message . '</p>',
-					[ 'type' => 'error' ]
-				);
+				tribe_notice( 'tribe-ext-daystrip-view-mismatch',
+				              '<p>' . $message . '</p>',
+				              [ 'type' => 'error' ] );
 			}
 
 			return $meets_req;
@@ -219,10 +195,8 @@ if (
 			if ( empty( $this->class_loader ) ) {
 				$this->class_loader = new Tribe__Autoloader;
 				$this->class_loader->set_dir_separator( '\\' );
-				$this->class_loader->register_prefix(
-					__NAMESPACE__ . '\\',
-					__DIR__ . DIRECTORY_SEPARATOR . 'src'
-				);
+				$this->class_loader->register_prefix( __NAMESPACE__ . '\\',
+				                                      __DIR__ . DIRECTORY_SEPARATOR . 'src' );
 			}
 
 			$this->class_loader->register_autoloader();
@@ -242,17 +216,16 @@ if (
 		}
 
 		public function daystrip( $file, $name, $template ) {
-
 			$options = $this->get_all_options();
 
-			$days_to_show = (int)$options['number_of_days'];
+			$days_to_show = (int) $options['number_of_days'];
 
 			// If out of range, then set to default.
 			if ( $days_to_show < 3 || $days_to_show > 31 ) {
 				$days_to_show = 9;
 			}
 
-			$day_name_length = (int)$options['length_of_day_name'];
+			$day_name_length = (int) $options['length_of_day_name'];
 
 			// If full width, add the necessary CSS
 			$full_width = $options['full_width'];
@@ -271,12 +244,13 @@ if (
 			}
 
 			// Choosing the starting date for the array and formatting it
-			$starting_date = date('Y-m-d', strtotime($selected_date_value . ' -' . intdiv( $days_to_show, 2 ) . ' days'));
+			$starting_date = date( 'Y-m-d',
+			                       strtotime( $selected_date_value . ' -' . intdiv( $days_to_show, 2 ) . ' days' ) );
 
 			// Creating and filling the array
 			$days = [];
-			for( $i = 0; $i < $days_to_show; $i++ ) {
-				$days[] = date('Y-m-d', strtotime($starting_date . ' +' . $i . ' days'));
+			for ( $i = 0; $i < $days_to_show; $i++ ) {
+				$days[] = date( 'Y-m-d', strtotime( $starting_date . ' +' . $i . ' days' ) );
 			}
 
 			// Setting up the width for the boxes
@@ -286,7 +260,7 @@ if (
 			echo '<div class="tribe-daystrip-container"' . $full_width . '>';
 
 			// Going through the array and setting up the strip
-			foreach( $days as $day ) {
+			foreach ( $days as $day ) {
 				// Making a date object
 				$date = date_create( $day );
 				$class = "";
@@ -294,11 +268,9 @@ if (
 				// Setting class for past, today, and future events
 				if ( strtotime( $day ) < strtotime( $default_date ) ) {
 					$class = 'tribe-daystrip-past';
-				}
-				elseif ( strtotime( $day ) == strtotime( $default_date ) ) {
+				} elseif ( strtotime( $day ) == strtotime( $default_date ) ) {
 					$class = 'tribe-daystrip-today';
-				}
-				elseif ( strtotime( $day ) > strtotime( $default_date ) ) {
+				} elseif ( strtotime( $day ) > strtotime( $default_date ) ) {
 					$class = 'tribe-daystrip-future';
 				}
 				// Setting class for selected day
@@ -308,7 +280,7 @@ if (
 
 				// Echoing the day
 				// Opening
-				echo '<div class="tribe-daystrip-day '. $class . '" style="width:' . $dayWidth . '%;">';
+				echo '<div class="tribe-daystrip-day ' . $class . '" style="width:' . $dayWidth . '%;">';
 
 				// Text part of the URL
 				$linkt = '<span class="tribe-daystrip-shortday">';
@@ -327,11 +299,11 @@ if (
 			}
 			// Closing of the strip
 			echo '</div>';
-
 		}
 
-		function filter_day_link ( $html ) {
+		function filter_day_link( $html ) {
 			$html = str_replace( 'rel="prev"', 'data-js="tribe-events-view-link"', $html );
+
 			return $html;
 		}
 	} // end class
