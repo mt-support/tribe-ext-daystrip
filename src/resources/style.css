@@ -13,7 +13,7 @@
     word-wrap: normal;
 }
 .tribe-events-header .tribe-daystrip-container .tribe-daystrip-day:nth-child(n+2) {
-    border-left: 1px solid #eee;
+    border-left: 1px solid #d5d5d5;
 }
 .tribe-daystrip-day span {
     display: block;
