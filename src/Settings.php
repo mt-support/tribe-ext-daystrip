@@ -197,6 +197,12 @@ if ( ! class_exists( Settings::class ) ) {
 					'type' => 'html',
 					'html' => $this->get_example_intro_text(),
 				],
+				'full_width' => [
+					'type'            => 'checkbox_bool',
+					'label'           => esc_html__( 'Full width strip', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'By default and if it fits, the strip appears next to the datepicker on the right. If set to full width, then the daystrip will appear below the datepicker.', 'tribe-ext-daystrip' ) ),
+					'validation_type' => 'boolean',
+				],
 				'number_of_days' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Number of days to show on the day strip', 'tribe-ext-daystrip' ),
@@ -229,10 +235,10 @@ if ( ! class_exists( Settings::class ) ) {
 					'size'            => 'small',
 					'default'         => 2,
 				],
-				'full_width' => [
+				'hide_date' => [
 					'type'            => 'checkbox_bool',
-					'label'           => esc_html__( 'Full width strip', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( 'By default and if it fits, the strip appears next to the datepicker on the right. If set to full width, then the daystrip will appear below the datepicker.', 'tribe-ext-daystrip' ) ),
+					'label'           => esc_html__( 'Hide date', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'Enabling this option will hide the date from the daystrip', 'tribe-ext-daystrip' ) ),
 					'validation_type' => 'boolean',
 				],
 				'hide_event_marker' => [

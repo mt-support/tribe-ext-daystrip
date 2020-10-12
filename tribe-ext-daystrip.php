@@ -403,9 +403,11 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				$html .= '</span>';
 
 				// Date of day
-				$html .= '<span class="tribe-daystrip-date">';
-				$html .= date_format( $date, 'd' );
-				$html .= '</span>';
+				if ( ! $args['options']['hide_date'] ) {
+					$html .= '<span class="tribe-daystrip-date">';
+					$html .= date_format( $date, 'd' );
+					$html .= '</span>';
+				}
 
 				// Day has event marker
 				if ( ! $args['options']['hide_event_marker'] ) {
