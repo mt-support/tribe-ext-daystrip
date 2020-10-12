@@ -250,6 +250,9 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			}
 
 			$args['day_name_length'] = (int) $options['length_of_day_name'];
+			if ( empty ( $args['day_name_length'] ) ) {
+				$args['day_name_length'] = 2;
+			}
 
 			// If full width, add the necessary CSS class
 			if ( $options['full_width'] ) {
@@ -305,13 +308,21 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		 */
 		function get_events_for_timeframe( $start_date, $end_date ) {
 			$args   = [
-				'start_date' => $start_date,
-				'end_date'   => $end_date,
+				'start_date'   => $start_date,
+				'end_date'     => $end_date,
+				'eventDisplay' => 'custom',
+				'numberposts'  => -1,
 			];
 			$dates =  [];
+
+			// This only brings 'Post per page' number of events
 			$events = tribe_get_events( $args );
+
 			foreach ( $events as $event ) {
-				$dates[] = date( 'Y-m-d', strtotime( $event->event_date ) );
+				$d = date( 'Y-m-d', strtotime( $event->event_date ) );
+				if ( ! in_array( $d, $dates ) ) {
+					$dates[] = $d;
+				}
 			}
 
 			return $dates;
