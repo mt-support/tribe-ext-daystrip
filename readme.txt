@@ -1,10 +1,10 @@
-=== The Events Calendar Pro Extension: Daystrip ===
+=== The Events Calendar Extension: Daystrip ===
 Contributors: ModernTribe
 Donate link: http://m.tri.be/29
 Tags: events, calendar
 Requires at least: 5.0
-Tested up to: 5.4
-Requires PHP: 5.6
+Tested up to: 5.5.1
+Requires PHP: 7.0
 Stable tag: 1.0.0
 License: GPL version 3 or any later version
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -31,6 +31,6 @@ We're always interested in your feedback and our [Help Desk](https://support.the
 
 == Changelog ==
 
-= [1.0.0] 2020.04.23 =
+= [1.0.0] 2020-10-12 =
 
 * Initial release
