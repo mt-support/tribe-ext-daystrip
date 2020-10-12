@@ -225,11 +225,12 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		public function daystrip( $file, $name, $template ) {
 			$options = $this->get_all_options();
 
+			// Some default values
 			$args = [
-				'days_to_show'        => '',
-				'day_name_length'     => '',
+				'days_to_show'        => 9,
+				'day_name_length'     => 2,
 				'full_width'          => '',
-				'todays_date'         => '',
+				'todays_date'         => $template->get( 'today' ),
 				'selected_date_value' => '',
 				'starting_date'       => '',
 				'days'                => [],
@@ -250,13 +251,12 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 
 			$args['day_name_length'] = (int) $options['length_of_day_name'];
 
-			// If full width, add the necessary CSS
+			// If full width, add the necessary CSS class
 			if ( $options['full_width'] ) {
 				$args['container_classes'][] = 'full-width';
 			}
 
-			$args['todays_date'] = $template->get( 'today' );
-
+			// Check the selected date, or today if nothing selected
 			$args['selected_date_value'] = $template->get( [ 'bar', 'date' ], $args['todays_date'] );
 			if ( empty( $args['selected_date_value'] ) ) {
 				$args['selected_date_value'] = $args['todays_date'];
