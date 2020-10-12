@@ -217,7 +217,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 
 		/**
 		 * Compiles the data for the daystrip
-		 * 
+		 *
 		 * @param $file
 		 * @param $name
 		 * @param $template
@@ -226,20 +226,20 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			$options = $this->get_all_options();
 
 			$args = [
-				'days_to_show' => '',
-				'day_name_length' => '',
-				'full_width' => '',
-				'todays_date' => '',
+				'days_to_show'        => '',
+				'day_name_length'     => '',
+				'full_width'          => '',
+				'todays_date'         => '',
 				'selected_date_value' => '',
-				'starting_date' => '',
-				'days'  => [],
-				'event_dates' => [],
-				'dayWidth' => '',
-				'container_classes' => [
+				'starting_date'       => '',
+				'days'                => [],
+				'event_dates'         => [],
+				'dayWidth'            => '',
+				'container_classes'   => [
 					'tribe-daystrip-container',
 					'tribe-common-b2',
 				],
-				'day_classes' => [],
+				'day_classes'         => [],
 			];
 
 			$args['days_to_show'] = (int) $options['number_of_days'];
@@ -263,7 +263,9 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			}
 
 			// Choosing the starting date for the array and formatting it
-			$args['starting_date'] = date( 'Y-m-d', strtotime( $args['selected_date_value'] . ' -' . intdiv( $args['days_to_show'], 2 ) . ' days' ) );
+			$args['starting_date'] = date( 'Y-m-d',
+			                               strtotime( $args['selected_date_value'] . ' -' . intdiv( $args['days_to_show'],
+			                                                                                        2 ) . ' days' ) );
 
 			// Creating and filling the array of days that we show
 			$args['days'] = [];
@@ -272,7 +274,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			}
 
 			// Dates on which we have events
-			$args['event_dates'] = $this->get_events_for_timeframe( $args['days'][0], end($args['days'] ) );
+			$args['event_dates'] = $this->get_events_for_timeframe( $args['days'][0], end( $args['days'] ) );
 
 			// Setting up the width for the boxes
 			$args['dayWidth'] = 100 / count( $args['days'] );
@@ -302,14 +304,16 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		 * @return mixed
 		 */
 		function get_events_for_timeframe( $start_date, $end_date ) {
-			$args = [
+			$args   = [
 				'start_date' => $start_date,
 				'end_date'   => $end_date,
 			];
+			$dates =  [];
 			$events = tribe_get_events( $args );
 			foreach ( $events as $event ) {
 				$dates[] = date( 'Y-m-d', strtotime( $event->event_date ) );
 			}
+
 			return $dates;
 		}
 
@@ -321,12 +325,12 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		private function render_daystrip( array $args ) {
 
 			// Opening the strip
-			$html = '<div class="' . implode(" ", $args['container_classes'] ) . '">';
+			$html = '<div class="' . implode( " ", $args['container_classes'] ) . '">';
 
 			// Going through the array and setting up the strip
 			foreach ( $args['days'] as $day ) {
 				// Making a date object
-				$date  = date_create( $day );
+				$date = date_create( $day );
 
 				unset( $args['day_classes'] );
 				$args['day_classes'][] = 'tribe-daystrip-day';
@@ -347,9 +351,9 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 					$args['day_classes'][] = 'has-event';
 				}
 
-				// Echoing the day
-				// Opening
-				$html .= '<div class="' . implode( " ", $args['day_classes'] ) . '" style="width:' . $args['dayWidth'] . '%;">';
+				// Opening the day
+				$html .= '<div class="' . implode( " ",
+				                                   $args['day_classes'] ) . '" style="width:' . $args['dayWidth'] . '%;">';
 
 				// URL
 				$html .= '<a href="' . tribe_events_get_url() . $day . '" data-js="tribe-events-view-link">';
@@ -365,6 +369,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				$html .= date_format( $date, 'd' );
 				$html .= '</span>';
 
+				// Day has event marker
 				if ( in_array( $day, $args['event_dates'] ) ) {
 					$html .= '<em
 								class="tribe-events-calendar-month__mobile-events-icon tribe-events-calendar-month__mobile-events-icon--event"
@@ -374,10 +379,11 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				// Closing the URL
 				$html .= '</a>';
 
-				// Closing of the day
+				// Closing the day
 				$html .= '</div>';
 			}
-			// Closing of the strip
+
+			// Closing the strip
 			$html .= '</div>';
 
 			// Rendering the HTML
