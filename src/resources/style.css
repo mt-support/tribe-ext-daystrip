@@ -40,6 +40,10 @@
 .tribe-daystrip-day.tribe-daystrip-today {
     font-weight: bold;
 }
-.tribe-events .tribe-events-calendar-month__mobile-events-icon--event {
+.tribe-events .tribe-events-calendar-day__daystrip-events-icon--event {
     display: inline-block;
+    background-color: #334aff;
+    border-radius: 50%;
+    height: 8px;
+    width: 8px;
 }

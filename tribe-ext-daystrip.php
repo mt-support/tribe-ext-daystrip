@@ -407,7 +407,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				// Day has event marker
 				if ( in_array( $day, $args['event_dates'] ) ) {
 					$html .= '<em
-								class="tribe-events-calendar-month__mobile-events-icon tribe-events-calendar-month__mobile-events-icon--event"
+								class="tribe-events-calendar-day__daystrip-events-icon--event"
 								aria-label="Has event" title="Has event"></em>';
 				}
 
