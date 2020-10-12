@@ -37,6 +37,9 @@
 .tribe-daystrip-day.current {
     background-color: #eee;
 }
+.tribe-daystrip-day.tribe-daystrip-today {
+    font-weight: bold;
+}
 .tribe-events .tribe-events-calendar-month__mobile-events-icon--event {
     display: inline-block;
 }
