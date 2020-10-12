@@ -265,10 +265,21 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				$args['selected_date_value'] = $args['todays_date'];
 			}
 
-			// Choosing the starting date for the array and formatting it
-			$args['starting_date'] = date( 'Y-m-d',
-			                               strtotime( $args['selected_date_value'] . ' -' . intdiv( $args['days_to_show'],
-			                                                                                        2 ) . ' days' ) );
+			// Fixed time range from today
+			if ( $options['functionality'] == 'fixed' ) {
+				$args['starting_date'] = $args['todays_date'];
+			}
+			// Only show forward
+			elseif ( $options['functionality'] == 'forward' ) {
+				$args['starting_date'] = $args['selected_date_value'];
+			}
+			// Default, selected day in the middle
+			else {
+				// Choosing the starting date for the array and formatting it
+				$args['starting_date'] = date( 'Y-m-d',
+				                               strtotime( $args['selected_date_value'] . ' -' . intdiv( $args['days_to_show'],
+				                                                                                        2 ) . ' days' ) );
+			}
 
 			// Creating and filling the array of days that we show
 			$args['days'] = [];

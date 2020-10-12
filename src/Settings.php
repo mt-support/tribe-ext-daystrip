@@ -205,6 +205,15 @@ if ( ! class_exists( Settings::class ) ) {
 					'size'            => 'small',
 					'default'         => 9,
 				],
+				'functionality' => [
+					'type'            => 'dropdown',
+					'label'           => esc_html__( 'Functionality', 'tribe-ext-daystrip' ),
+					'tooltip'         => esc_html__( 'Choose what functionality you would like.', 'tribe-ext-daystrip' ),
+					'validation_type' => 'options',
+					'size'            => 'small',
+					'default'         => 'default',
+					'options'         => $this->functionality_options(),
+				],
 				'length_of_day_name' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Length of the day name', 'tribe-ext-daystrip' ),
@@ -229,6 +238,13 @@ if ( ! class_exists( Settings::class ) ) {
 			);
 		}
 
+		private function functionality_options() {
+			return [
+				'default' => esc_html__( 'Selected day always in the middle of the strip', 'tribe-ext-daystrip' ),
+				'forward' => esc_html__( 'Only show days forward from the selected day', 'tribe-ext-daystrip' ),
+				'fixed'   => esc_html__( 'Show fixed number of days starting today', 'tribe-ext-daystrip' ),
+			];
+	}
 		/**
 		 * Add the options prefix to each of the array keys.
 		 *
