@@ -277,7 +277,11 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			}
 
 			// Dates on which we have events
-			$args['event_dates'] = $this->get_events_for_timeframe( $args['days'][0], end( $args['days'] ) );
+			// The end date is excluded, so we need to add one day to the end
+			$args['event_dates'] = $this->get_events_for_timeframe(
+				$args['days'][0],
+				date( 'Y-m-d', strtotime( end( $args['days'] ) . '+1 day' ) )
+			);
 
 			// Setting up the width for the boxes
 			$args['dayWidth'] = 100 / count( $args['days'] );
@@ -310,8 +314,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			$args   = [
 				'start_date'   => $start_date,
 				'end_date'     => $end_date,
-				'eventDisplay' => 'custom',
-				'numberposts'  => -1,
+				'posts_per_page'  => -1,
 			];
 			$dates =  [];
 
