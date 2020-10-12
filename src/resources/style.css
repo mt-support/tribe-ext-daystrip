@@ -1,6 +1,10 @@
 .tribe-events-header .tribe-daystrip-container {
     display: none;
 }
+.tribe-events-header .tribe-daystrip-container.full-width {
+    width: 100%;
+    margin-top: 1em;
+}
 .tribe-common--breakpoint-medium.tribe-common .tribe-events-header .tribe-daystrip-container {
     line-height: 1.1;
     display: flex;
