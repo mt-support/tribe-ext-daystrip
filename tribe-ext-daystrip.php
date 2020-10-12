@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       The Events Calendar Pro Extension: Daystrip
+ * Plugin Name:       The Events Calendar Extension: Daystrip
  * Plugin URI:        https://theeventscalendar.com/extensions/daystrip/
  * GitHub Plugin URI: https://github.com/mt-support/tribe-ext-daystrip
  * Description:       Adds a day strip at the top of the Day View.
@@ -51,7 +51,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		 * This always executes even if the required plugins are not present.
 		 */
 		public function construct() {
-			$this->add_required_plugin( 'Tribe__Events__Pro__Main', '5.0' );
+			$this->add_required_plugin( 'Tribe__Events__Main', '5.0' );
 		}
 
 		/**
@@ -113,7 +113,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		 * @return bool
 		 */
 		private function php_version_check() {
-			$php_required_version = '5.6';
+			$php_required_version = '7.0';
 
 			if ( version_compare( PHP_VERSION, $php_required_version, '<' ) ) {
 				if ( is_admin() && current_user_can( 'activate_plugins' ) ) {
