@@ -235,6 +235,12 @@ if ( ! class_exists( Settings::class ) ) {
 					'tooltip'         => sprintf( esc_html__( 'By default and if it fits, the strip appears next to the datepicker on the right. If set to full width, then the daystrip will appear below the datepicker.', 'tribe-ext-daystrip' ) ),
 					'validation_type' => 'boolean',
 				],
+				'hide_event_marker' => [
+					'type'            => 'checkbox_bool',
+					'label'           => esc_html__( 'Hide event marker', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'Enabling this option will hide the blue dot event marker from the daystrip', 'tribe-ext-daystrip' ) ),
+					'validation_type' => 'boolean',
+				],
 			];
 
 			$this->settings_helper->add_fields(

@@ -241,6 +241,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 					'tribe-common-b2',
 				],
 				'day_classes'         => [],
+				'options'             => $options,
 			];
 
 			$args['days_to_show'] = (int) $options['number_of_days'];
@@ -407,10 +408,12 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				$html .= '</span>';
 
 				// Day has event marker
-				if ( in_array( $day, $args['event_dates'] ) ) {
-					$html .= '<em
+				if ( ! $args['options']['hide_event_marker'] ) {
+					if ( in_array( $day, $args['event_dates'] ) ) {
+						$html .= '<em
 								class="tribe-events-calendar-day__daystrip-events-icon--event"
 								aria-label="Has event" title="Has event"></em>';
+					}
 				}
 
 				// Closing the URL
