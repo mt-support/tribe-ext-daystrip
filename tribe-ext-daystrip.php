@@ -266,8 +266,18 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			}
 
 			// Fixed time range from today
-			if ( $options['functionality'] == 'fixed' ) {
+			if ( $options['functionality'] == 'fixed_from_today' ) {
 				$args['starting_date'] = $args['todays_date'];
+			}
+			// Fixed time range from set date
+			elseif ( $options['functionality'] == 'fixed_from_date' ) {
+				$sd = explode( '-', $options['start_date'] );
+				if ( checkdate( $sd[1], $sd[2], $sd[0] ) ) {
+					$args['starting_date'] = $options['start_date'];
+				}
+				else {
+					$args['starting_date'] = $args['todays_date'];
+				}
 			}
 			// Only show forward
 			elseif ( $options['functionality'] == 'forward' ) {

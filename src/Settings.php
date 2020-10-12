@@ -214,6 +214,13 @@ if ( ! class_exists( Settings::class ) ) {
 					'default'         => 'default',
 					'options'         => $this->functionality_options(),
 				],
+				'start_date' => [
+					'type'            => 'text',
+					'label'           => esc_html__( 'Start date', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( "Use YYYY-MM-DD format. Works only with the option %sShow fixed number of days starting on a specific date%s.", 'tribe-ext-daystrip' ), '<code>', '</code>' ) . '<br/><em>' . esc_html__( 'Default value:', 'tribe-ext-daystrip') . ' 2</em>',
+					'validation_type' => 'alpha_numeric_with_dashes_and_underscores',
+					'size'            => 'medium',
+				],
 				'length_of_day_name' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Length of the day name', 'tribe-ext-daystrip' ),
@@ -240,9 +247,10 @@ if ( ! class_exists( Settings::class ) ) {
 
 		private function functionality_options() {
 			return [
-				'default' => esc_html__( 'Selected day always in the middle of the strip', 'tribe-ext-daystrip' ),
-				'forward' => esc_html__( 'Only show days forward from the selected day', 'tribe-ext-daystrip' ),
-				'fixed'   => esc_html__( 'Show fixed number of days starting today', 'tribe-ext-daystrip' ),
+				'default'          => esc_html__( 'Selected day always in the middle of the strip', 'tribe-ext-daystrip' ),
+				'forward'          => esc_html__( 'Only show days forward from the selected day', 'tribe-ext-daystrip' ),
+				'fixed_from_today' => esc_html__( 'Show fixed number of days starting today', 'tribe-ext-daystrip' ),
+				'fixed_from_date'  => esc_html__( 'Show fixed number of days starting on a specific date', 'tribe-ext-daystrip' ),
 			];
 	}
 		/**
