@@ -24,9 +24,10 @@
     display: block;
     text-align: center;
 }
-.tribe-daystrip-shortday {
+.tribe-daystrip-dayname {
     font-size: 0.7em;
     overflow: hidden;
+    text-transform: uppercase;
 }
 .tribe-daystrip-date {
 

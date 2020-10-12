@@ -224,7 +224,7 @@ if ( ! class_exists( Settings::class ) ) {
 				'length_of_day_name' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Length of the day name', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( 'Defines how long the day name should be, e.g. if set to 2 then day names will be like Mo, Tu, etc. With a value of zero (0) day names will be hidden.', 'tribe-ext-daystrip' ) ) . '<br/><em>' . esc_html__( 'Default value:', 'tribe-ext-daystrip') . ' 2</em>',
+					'tooltip'         => sprintf( esc_html__( 'Defines how long the day name should be, e.g. if set to %s then day names will be like Mo, Tu, etc. A value of %s or empty value will hide the day names. A value of %s will show the full day name.', 'tribe-ext-daystrip' ), '<code>2</code>', '<code>0</code>', '<code>-1</code>' ),
 					'validation_type' => 'int',
 					'size'            => 'small',
 					'default'         => 2,

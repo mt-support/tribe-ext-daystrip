@@ -250,9 +250,6 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			}
 
 			$args['day_name_length'] = (int) $options['length_of_day_name'];
-			if ( empty ( $args['day_name_length'] ) ) {
-				$args['day_name_length'] = 2;
-			}
 
 			// If full width, add the necessary CSS class
 			if ( $options['full_width'] ) {
@@ -395,8 +392,13 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 
 				// Text part of the URL
 				// Name of day
-				$html .= '<span class="tribe-daystrip-shortday">';
-				$html .= strtoupper( substr( date_format( $date, 'l' ), 0, $args['day_name_length'] ) );
+				$html .= '<span class="tribe-daystrip-dayname">';
+				if ( $args['day_name_length'] == -1 ) {
+					$html .= date_format( $date, 'l' );
+				}
+				else {
+					$html .= substr( date_format( $date, 'l' ), 0, $args['day_name_length'] );
+				}
 				$html .= '</span>';
 
 				// Date of day
