@@ -235,6 +235,11 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				'days'  => [],
 				'event_dates' => [],
 				'dayWidth' => '',
+				'container_classes' => [
+					'tribe-daystrip-container',
+					'tribe-common-b2',
+				],
+				'day_classes' => [],
 			];
 
 			$args['days_to_show'] = (int) $options['number_of_days'];
@@ -247,7 +252,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 
 			// If full width, add the necessary CSS
 			if ( $options['full_width'] ) {
-				$args['full_width'] = ' full-width';
+				$args['container_classes'][] = 'full-width';
 			}
 
 			$args['todays_date'] = $template->get( 'today' );
@@ -316,58 +321,67 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		private function render_daystrip( array $args ) {
 
 			// Opening the strip
-			echo '<div class="tribe-daystrip-container tribe-common-b2"' . $args['full_width'] . '>';
+			$html = '<div class="' . implode(" ", $args['container_classes'] ) . '">';
 
 			// Going through the array and setting up the strip
 			foreach ( $args['days'] as $day ) {
 				// Making a date object
 				$date  = date_create( $day );
-				$class = "";
 
+				unset( $args['day_classes'] );
+				$args['day_classes'][] = 'tribe-daystrip-day';
 				// Setting class for past, today, and future events
 				if ( strtotime( $day ) < strtotime( $args['todays_date'] ) ) {
-					$class = 'tribe-daystrip-past';
+					$args['day_classes'][] = 'tribe-daystrip-past';
 				} elseif ( strtotime( $day ) == strtotime( $args['todays_date'] ) ) {
-					$class = 'tribe-daystrip-today';
+					$args['day_classes'][] = 'tribe-daystrip-today';
 				} elseif ( strtotime( $day ) > strtotime( $args['todays_date'] ) ) {
-					$class = 'tribe-daystrip-future';
+					$args['day_classes'][] = 'tribe-daystrip-future';
 				}
 				// Setting class for selected day
 				if ( strtotime( $day ) == strtotime( $args['selected_date_value'] ) ) {
-					$class .= ' current';
+					$args['day_classes'][] = 'current';
 				}
 
 				if ( in_array( $day, $args['event_dates'] ) ) {
-					$class .= ' has-event';
+					$args['day_classes'][] = 'has-event';
 				}
 
 				// Echoing the day
 				// Opening
-				echo '<div class="tribe-daystrip-day ' . $class . '" style="width:' . $args['dayWidth'] . '%;">';
+				$html .= '<div class="' . implode( " ", $args['day_classes'] ) . '" style="width:' . $args['dayWidth'] . '%;">';
+
+				// URL
+				$html .= '<a href="' . tribe_events_get_url() . $day . '" data-js="tribe-events-view-link">';
 
 				// Text part of the URL
-				$linkt = '<span class="tribe-daystrip-shortday">';
-				$linkt .= strtoupper( substr( date_format( $date, 'l' ), 0, $args['day_name_length'] ) );
-				$linkt .= '</span>';
+				// Name of day
+				$html .= '<span class="tribe-daystrip-shortday">';
+				$html .= strtoupper( substr( date_format( $date, 'l' ), 0, $args['day_name_length'] ) );
+				$html .= '</span>';
+
 				// Date of day
-				$linkt .= '<span class="tribe-daystrip-date">';
-				$linkt .= date_format( $date, 'd' );
-				$linkt .= '</span>';
+				$html .= '<span class="tribe-daystrip-date">';
+				$html .= date_format( $date, 'd' );
+				$html .= '</span>';
 
 				if ( in_array( $day, $args['event_dates'] ) ) {
-					$linkt .= '<em
+					$html .= '<em
 								class="tribe-events-calendar-month__mobile-events-icon tribe-events-calendar-month__mobile-events-icon--event"
 								aria-label="Has event" title="Has event"></em>';
 				}
-				// echoing the URL
-				tribe_the_day_link( $day, $linkt );
 
+				// Closing the URL
+				$html .= '</a>';
 
 				// Closing of the day
-				echo '</div>';
+				$html .= '</div>';
 			}
 			// Closing of the strip
-			echo '</div>';
+			$html .= '</div>';
+
+			// Rendering the HTML
+			echo $html;
 		}
 	} // end class
 } // end if class_exists check
