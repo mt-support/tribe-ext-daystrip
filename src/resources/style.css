@@ -26,6 +26,7 @@
 }
 .tribe-daystrip-shortday {
     font-size: 0.7em;
+    overflow: hidden;
 }
 .tribe-daystrip-date {
 

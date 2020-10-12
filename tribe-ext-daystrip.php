@@ -356,7 +356,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				                                   $args['day_classes'] ) . '" style="width:' . $args['dayWidth'] . '%;">';
 
 				// URL
-				$html .= '<a href="' . tribe_events_get_url() . $day . '" data-js="tribe-events-view-link">';
+				$html .= '<a href="' . tribe_events_get_url() . $day . '" data-js="tribe-events-view-link" aria-label="' . date( tribe_get_date_format( true ), strtotime( $day ) ) . '" title="' . date( tribe_get_date_format( true ), strtotime( $day ) ) . '">';
 
 				// Text part of the URL
 				// Name of day
