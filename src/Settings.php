@@ -96,11 +96,13 @@ if ( ! class_exists( Settings::class ) ) {
 		 *
 		 * This automatically prepends this extension's option prefix so you can just do `$this->get_option( 'a_setting' )`.
 		 *
-		 * @see tribe_get_option()
-		 *
 		 * @param string $key
 		 *
+		 * @param string $default
+		 *
 		 * @return mixed
+		 * @see tribe_get_option()
+		 *
 		 */
 		public function get_option( $key = '', $default = '' ) {
 			$key = $this->sanitize_option_key( $key );
@@ -312,9 +314,7 @@ if ( ! class_exists( Settings::class ) ) {
 		 * @return string
 		 */
 		private function get_example_intro_text() {
-			$result = '<h3>' . esc_html_x( 'Daystrip Extension Settings', 'Settings header', 'tribe-ext-daystrip' ) . '</h3>';
-
-			return $result;
+			return '<h3>' . esc_html_x( 'Day Strip Extension Settings', 'Settings header', 'tribe-ext-daystrip' ) . '</h3>';
 		}
 
 	} // class

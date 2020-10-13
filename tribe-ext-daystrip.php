@@ -167,7 +167,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				if ( 1 === $view_required_version ) {
 					$view_name = _x( 'Legacy Views', 'name of view', 'tribe-ext-daystrip' );
 				} else {
-					$view_name = _x( 'New (V2) Views', 'name of view', 'tribe-ext-daystrip' );
+					$view_name = _x( 'Updated (V2) Views', 'name of view', 'tribe-ext-daystrip' );
 				}
 
 				$view_name = sprintf( '<a href="%s">%s</a>',
@@ -218,7 +218,10 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		}
 
 		/**
-		 * Get all of this extension's options.
+		 * Get a specific extension option.
+		 *
+		 * @param $option
+		 * @param string $default
 		 *
 		 * @return array
 		 */
@@ -229,7 +232,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		}
 
 		/**
-		 * Compiles the data for the daystrip
+		 * Compiles the data for the daystrip.
 		 *
 		 * @param $file
 		 * @param $name
@@ -257,7 +260,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			];
 
 			$args['days_to_show'] = (int) $options['number_of_days'];
-			// If out of range, then set to default.
+			// If out of range, then set to default
 			if ( $args['days_to_show'] < 3 || $args['days_to_show'] > 31 ) {
 				$args['days_to_show'] = 9;
 			}
@@ -332,7 +335,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		}
 
 		/**
-		 * Filters the URL to make it work with AJAX loading
+		 * Filters the URL to make it work with AJAX loading.
 		 *
 		 * @param $html
 		 *
@@ -344,7 +347,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		}
 
 		/**
-		 * Get the dates of events in the timeframe shown on the day strip
+		 * Get the dates of events in the timeframe shown on the day strip.
 		 *
 		 * @param $start_date
 		 * @param $end_date
@@ -373,7 +376,8 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		}
 
 		/**
-		 * Adjust the start of the week based on the WordPress setting
+		 * Adjust the start of the week based on the WordPress setting.
+		 *
 		 * @return string
 		 */
 		public function adjust_week_start() {
@@ -391,7 +395,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		}
 
 		/**
-		 * Makes the day view jump to a specific date
+		 * Makes the day view jump to a specific date.
 		 *
 		 * @TODO Needs work
 		 *
@@ -412,6 +416,9 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			return $repository_args;
 		}
 
+		/**
+		 * Add dynamically calculated styles to the footer.
+		 */
 		public function footer_styles() {
 			$divider = $this->get_option( 'number_of_days' );
 			$functionality = $this->get_option( 'functionality' );
@@ -430,7 +437,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		}
 
 		/**
-		 * Rendering the daystrip markup
+		 * Rendering the daystrip markup.
 		 *
 		 * @param array $args
 		 */
