@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       The Events Calendar Extension: Daystrip
+ * Plugin Name:       The Events Calendar Extension: Day Strip
  * Plugin URI:        https://theeventscalendar.com/extensions/daystrip/
  * GitHub Plugin URI: https://github.com/mt-support/tribe-ext-daystrip
  * Description:       Adds a day strip at the top of the Day View.
@@ -395,10 +395,10 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				// Name of day
 				$html .= '<span class="tribe-daystrip-dayname">';
 				if ( $args['day_name_length'] == -1 ) {
-					$html .= date_format( $date, 'l' );
+					$html .= $date->format( 'l' );
 				}
 				else {
-					$html .= substr( date_format( $date, 'l' ), 0, $args['day_name_length'] );
+					$html .= substr( $date->format( 'l' ), 0, $args['day_name_length'] );
 				}
 				$html .= '</span>';
 
