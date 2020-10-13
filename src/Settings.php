@@ -239,9 +239,8 @@ if ( ! class_exists( Settings::class ) ) {
 					'type'            => 'html',
 					'html' => '<p>'
 					          . sprintf(
-						          __( 'The following two fields accept the date format options available to the PHP <a href="%2$s" target="_blank">%1$s</a> function.', 'tribe-ext-daystrip' ),
-						          '<code>date()</code>',
-						          'https://codex.wordpress.org/Formatting_Date_and_Time'
+						          esc_html__( 'The following two fields accept the date format options available to the PHP %s function.', 'tribe-ext-daystrip' ),
+						          '<a href="https://codex.wordpress.org/Formatting_Date_and_Time/" target="_blank"><code>date()</code></a>'
 					          )
 					          . '</p>',
 				],
@@ -264,7 +263,7 @@ if ( ! class_exists( Settings::class ) ) {
 				'hide_event_marker' => [
 					'type'            => 'checkbox_bool',
 					'label'           => esc_html__( 'Hide event marker', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( 'Enabling this option will hide the blue dot event marker from the daystrip', 'tribe-ext-daystrip' ) ),
+					'tooltip'         => sprintf( esc_html__( 'Enabling this option will hide the blue dot event marker from the daystrip.', 'tribe-ext-daystrip' ) ),
 					'validation_type' => 'boolean',
 				],
 			];
