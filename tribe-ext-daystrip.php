@@ -403,9 +403,14 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				$html .= '</span>';
 
 				// Date of day
-				if ( ! $args['options']['hide_date'] ) {
+				if ( ! empty( $args['options']['date_format'] ) && $args['options']['date_format'] != '0' ) {
 					$html .= '<span class="tribe-daystrip-date">';
-					$html .= date_format( $date, 'd' );
+					$html .= $date->format( $args['options']['date_format'] );
+					$html .= '</span>';
+				}
+				if ( ! empty( $args['options']['month_format'] ) && $args['options']['month_format'] != '0' ) {
+					$html .= '<span class="tribe-daystrip-month">';
+					$html .= $date->format( $args['options']['month_format'] );
 					$html .= '</span>';
 				}
 

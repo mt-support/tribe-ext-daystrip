@@ -235,11 +235,31 @@ if ( ! class_exists( Settings::class ) ) {
 					'size'            => 'small',
 					'default'         => 2,
 				],
-				'hide_date' => [
-					'type'            => 'checkbox_bool',
-					'label'           => esc_html__( 'Hide date', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( 'Enabling this option will hide the date from the daystrip', 'tribe-ext-daystrip' ) ),
-					'validation_type' => 'boolean',
+				'just_a_label' => [
+					'type'            => 'html',
+					'html' => '<p>'
+					          . sprintf(
+						          __( 'The following two fields accept the date format options available to the PHP <a href="%2$s" target="_blank">%1$s</a> function.', 'tribe-ext-daystrip' ),
+						          '<code>date()</code>',
+						          'https://codex.wordpress.org/Formatting_Date_and_Time'
+					          )
+					          . '</p>',
+				],
+				'date_format' => [
+					'type'            => 'text',
+					'label'           => esc_html__( 'Date format', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'j - 1, d - 01, jS - 1st, 0 - hide', 'tribe-ext-daystrip' ) ),
+					'validation_type' => 'alpha_numeric',
+					'size'            => 'small',
+					'default'         => 'j',
+				],
+				'month_format' => [
+					'type'            => 'text',
+					'label'           => esc_html__( 'Month format', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'M - Jan., F - January, m - 01, n - 1, 0 - hide', 'tribe-ext-daystrip' ) ),
+					'validation_type' => 'alpha_numeric',
+					'size'            => 'small',
+					'default'         => 'M',
 				],
 				'hide_event_marker' => [
 					'type'            => 'checkbox_bool',
