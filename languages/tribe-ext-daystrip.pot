@@ -2,15 +2,15 @@
 msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"Project-Id-Version: The Events Calendar Pro Extension: Daystrip\n"
-"POT-Creation-Date: 2020-04-23 11:50+0200\n"
+"Project-Id-Version: The Events Calendar Extension: Daystrip\n"
+"POT-Creation-Date: 2020-10-13 11:52+0200\n"
 "PO-Revision-Date: 2020-04-23 10:42+0200\n"
 "Last-Translator: Andras Guseo <aguseo@gmail.com>\n"
-"Language-Team: Andras Guseo <aguseo@gmail.com>\n"
+"Language-Team: Modern Tribe, Inc. (support@theeventscalendar.com)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.4.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: tribe-ext-daystrip.php\n"
@@ -21,63 +21,141 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
-#: src/Settings.php:202
-msgid "Number of days to show on the day strip"
+#: src/Settings.php:204
+msgid "Full width strip"
 msgstr ""
 
-#: src/Settings.php:203
+#: src/Settings.php:205
 msgid ""
-"Enter the number of days to be shown on the daystrip. Best is if it is an "
-"odd number, and bigger than 2."
+"By default and if it fits, the strip appears next to the datepicker on the "
+"right. If set to full width, then the daystrip will appear below the "
+"datepicker."
 msgstr ""
 
 #: src/Settings.php:210
-msgid "Length of the day name"
+msgid "Number of days to show on the day strip"
 msgstr ""
 
 #: src/Settings.php:211
 msgid ""
-"Defines how long the day name should be, e.g. if set to 2 then day names "
-"will be like Mo, Tu, etc."
+"The number of days to be shown on the daystrip. Best is if it is an odd "
+"number, and bigger than 2."
+msgstr ""
+
+#: src/Settings.php:211 src/Settings.php:228
+msgid "Default value:"
 msgstr ""
 
 #: src/Settings.php:218
-msgid "Full width strip?"
+msgid "Functionality"
 msgstr ""
 
 #: src/Settings.php:219
-msgid ""
-"By default and if it fits, the strip appears next to the datepicker on the "
-"right. If you set it to full width, then it will move below the datepicker."
+msgid "Choose what functionality you would like."
 msgstr ""
 
-#: src/Settings.php:258
+#: src/Settings.php:227
+msgid "Start date"
+msgstr ""
+
+#: src/Settings.php:228
+#, php-format
+msgid ""
+"Use YYYY-MM-DD format. Works only with the option %sShow fixed number of "
+"days starting on a specific date%s."
+msgstr ""
+
+#: src/Settings.php:234
+msgid "Length of the day name"
+msgstr ""
+
+#: src/Settings.php:235
+#, php-format
+msgid ""
+"Defines how long the day name should be, e.g. if set to %s then day names "
+"will be like Mo, Tu, etc. A value of %s or empty value will hide the day "
+"names. A value of %s will show the full day name."
+msgstr ""
+
+#: src/Settings.php:244
+#, php-format
+msgid ""
+"The following two fields accept the date format options available to the "
+"PHP %s function."
+msgstr ""
+
+#: src/Settings.php:251
+msgid "Date format"
+msgstr ""
+
+#: src/Settings.php:252
+msgid "j - 1, d - 01, jS - 1st, 0 - hide"
+msgstr ""
+
+#: src/Settings.php:259
+msgid "Month format"
+msgstr ""
+
+#: src/Settings.php:260
+msgid "M - Jan., F - January, m - 01, n - 1, 0 - hide"
+msgstr ""
+
+#: src/Settings.php:267
+msgid "Hide event marker"
+msgstr ""
+
+#: src/Settings.php:268
+msgid ""
+"Enabling this option will hide the blue dot event marker from the daystrip."
+msgstr ""
+
+#: src/Settings.php:283
+msgid "Selected day always in the middle of the strip"
+msgstr ""
+
+#: src/Settings.php:284
+msgid "Only show days forward from the selected day"
+msgstr ""
+
+#: src/Settings.php:285
+msgid "Show fixed number of days starting today"
+msgstr ""
+
+#: src/Settings.php:286
+msgid "Show fixed number of days starting on a specific date"
+msgstr ""
+
+#: src/Settings.php:287
+msgid "Current week (forces 7 days)"
+msgstr ""
+
+#: src/Settings.php:317
 msgctxt "Settings header"
-msgid "Daystrip Extension Settings"
+msgid "Day Strip Extension Settings"
 msgstr ""
 
 #: src/Settings_Helper.php:130
 msgid "Miscellaneous Settings"
 msgstr ""
 
-#: tribe-ext-daystrip.php:126
+#: tribe-ext-daystrip.php:123
 #, php-format
 msgid ""
 "%s requires PHP version %s or newer to work. Please contact your website "
 "host and inquire about updating PHP."
 msgstr ""
 
-#: tribe-ext-daystrip.php:181
+#: tribe-ext-daystrip.php:168
 msgctxt "name of view"
 msgid "Legacy Views"
 msgstr ""
 
-#: tribe-ext-daystrip.php:183
+#: tribe-ext-daystrip.php:170
 msgctxt "name of view"
-msgid "New (V2) Views"
+msgid "Updated (V2) Views"
 msgstr ""
 
-#: tribe-ext-daystrip.php:195
+#: tribe-ext-daystrip.php:178
 #, php-format
 msgid ""
 "%1$s requires the \"%2$s\" so this extension's code will not run until this "
@@ -86,7 +164,7 @@ msgid ""
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "The Events Calendar Pro Extension: Daystrip"
+msgid "The Events Calendar Extension: Day Strip"
 msgstr ""
 
 #. Plugin URI of the plugin/theme

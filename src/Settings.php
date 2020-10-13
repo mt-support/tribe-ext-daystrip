@@ -96,11 +96,13 @@ if ( ! class_exists( Settings::class ) ) {
 		 *
 		 * This automatically prepends this extension's option prefix so you can just do `$this->get_option( 'a_setting' )`.
 		 *
-		 * @see tribe_get_option()
-		 *
 		 * @param string $key
 		 *
+		 * @param string $default
+		 *
 		 * @return mixed
+		 * @see tribe_get_option()
+		 *
 		 */
 		public function get_option( $key = '', $default = '' ) {
 			$key = $this->sanitize_option_key( $key );
@@ -197,26 +199,73 @@ if ( ! class_exists( Settings::class ) ) {
 					'type' => 'html',
 					'html' => $this->get_example_intro_text(),
 				],
+				'full_width' => [
+					'type'            => 'checkbox_bool',
+					'label'           => esc_html__( 'Full width strip', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'By default and if it fits, the strip appears next to the datepicker on the right. If set to full width, then the daystrip will appear below the datepicker.', 'tribe-ext-daystrip' ) ),
+					'validation_type' => 'boolean',
+				],
 				'number_of_days' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Number of days to show on the day strip', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( 'Enter the number of days to be shown on the daystrip. Best is if it is an odd number, and bigger than 2.', 'tribe-ext-daystrip' ) ),
+					'tooltip'         => sprintf( esc_html__( 'The number of days to be shown on the daystrip. Best is if it is an odd number, and bigger than 2.', 'tribe-ext-daystrip' ) ) . '<br/><em>' . esc_html__( 'Default value:', 'tribe-ext-daystrip') . ' 9</em>',
 					'validation_type' => 'positive_int',
 					'size'            => 'small',
 					'default'         => 9,
 				],
+				'functionality' => [
+					'type'            => 'dropdown',
+					'label'           => esc_html__( 'Functionality', 'tribe-ext-daystrip' ),
+					'tooltip'         => esc_html__( 'Choose what functionality you would like.', 'tribe-ext-daystrip' ),
+					'validation_type' => 'options',
+					'size'            => 'small',
+					'default'         => 'default',
+					'options'         => $this->functionality_options(),
+				],
+				'start_date' => [
+					'type'            => 'text',
+					'label'           => esc_html__( 'Start date', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( "Use YYYY-MM-DD format. Works only with the option %sShow fixed number of days starting on a specific date%s.", 'tribe-ext-daystrip' ), '<code>', '</code>' ) . '<br/><em>' . esc_html__( 'Default value:', 'tribe-ext-daystrip') . ' 2</em>',
+					'validation_type' => 'alpha_numeric_with_dashes_and_underscores',
+					'size'            => 'medium',
+				],
 				'length_of_day_name' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Length of the day name', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( 'Defines how long the day name should be, e.g. if set to 2 then day names will be like Mo, Tu, etc.', 'tribe-ext-daystrip' ) ),
+					'tooltip'         => sprintf( esc_html__( 'Defines how long the day name should be, e.g. if set to %s then day names will be like Mo, Tu, etc. A value of %s or empty value will hide the day names. A value of %s will show the full day name.', 'tribe-ext-daystrip' ), '<code>2</code>', '<code>0</code>', '<code>-1</code>' ),
 					'validation_type' => 'int',
 					'size'            => 'small',
 					'default'         => 2,
 				],
-				'full_width' => [
+				'just_a_label' => [
+					'type'            => 'html',
+					'html' => '<p>'
+					          . sprintf(
+						          esc_html__( 'The following two fields accept the date format options available to the PHP %s function.', 'tribe-ext-daystrip' ),
+						          '<a href="https://codex.wordpress.org/Formatting_Date_and_Time/" target="_blank"><code>date()</code></a>'
+					          )
+					          . '</p>',
+				],
+				'date_format' => [
+					'type'            => 'text',
+					'label'           => esc_html__( 'Date format', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'j - 1, d - 01, jS - 1st, 0 - hide', 'tribe-ext-daystrip' ) ),
+					'validation_type' => 'alpha_numeric',
+					'size'            => 'small',
+					'default'         => 'j',
+				],
+				'month_format' => [
+					'type'            => 'text',
+					'label'           => esc_html__( 'Month format', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'M - Jan., F - January, m - 01, n - 1, 0 - hide', 'tribe-ext-daystrip' ) ),
+					'validation_type' => 'alpha_numeric',
+					'size'            => 'small',
+					'default'         => 'M',
+				],
+				'hide_event_marker' => [
 					'type'            => 'checkbox_bool',
-					'label'           => esc_html__( 'Full width strip?', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( 'By default and if it fits, the strip appears next to the datepicker on the right. If you set it to full width, then it will move below the datepicker.', 'tribe-ext-daystrip' ) ),
+					'label'           => esc_html__( 'Hide event marker', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'Enabling this option will hide the blue dot event marker from the daystrip.', 'tribe-ext-daystrip' ) ),
 					'validation_type' => 'boolean',
 				],
 			];
@@ -229,6 +278,16 @@ if ( ! class_exists( Settings::class ) ) {
 			);
 		}
 
+		private function functionality_options() {
+			return [
+				'default'          => esc_html__( 'Selected day always in the middle of the strip', 'tribe-ext-daystrip' ),
+				'forward'          => esc_html__( 'Only show days forward from the selected day', 'tribe-ext-daystrip' ),
+				'fixed_from_today' => esc_html__( 'Show fixed number of days starting today', 'tribe-ext-daystrip' ),
+				'fixed_from_date'  => esc_html__( 'Show fixed number of days starting on a specific date', 'tribe-ext-daystrip' ),
+				'current_week'     => esc_html__( 'Current week (forces 7 days)', 'tribe-ext-daystrip' ),
+				//'next_week'        => esc_html__( 'Next week (forces 7 days)', 'tribe-ext-daystrip' ), // @TODO This needs to be fixed
+			];
+	}
 		/**
 		 * Add the options prefix to each of the array keys.
 		 *
@@ -255,9 +314,7 @@ if ( ! class_exists( Settings::class ) ) {
 		 * @return string
 		 */
 		private function get_example_intro_text() {
-			$result = '<h3>' . esc_html_x( 'Daystrip Extension Settings', 'Settings header', 'tribe-ext-daystrip' ) . '</h3>';
-
-			return $result;
+			return '<h3>' . esc_html_x( 'Day Strip Extension Settings', 'Settings header', 'tribe-ext-daystrip' ) . '</h3>';
 		}
 
 	} // class
