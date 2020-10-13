@@ -103,6 +103,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			wp_enqueue_style( 'tribe-ext-daystrip', plugin_dir_url( __FILE__ ) . 'src/resources/style.css' );
 			add_filter( 'tribe_the_day_link', [ $this, 'filter_day_link' ] );
 			add_action( 'tribe_template_after_include:events/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
+			add_filter( 'tribe_events_views_v2_view_repository_args', [ $this, 'jump_to_next_week' ], 10, 3 );
 		}
 
 		/**
@@ -281,6 +282,20 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			elseif ( $options['functionality'] == 'forward' ) {
 				$args['starting_date'] = $args['selected_date_value'];
 			}
+			// Current week
+			elseif ( $options['functionality'] == 'current_week' ) {
+				$args['starting_date'] = date('Y-m-d', strtotime('this week' . $this->adjust_week_start() ) );
+				$args['days_to_show'] = 7;
+			}
+			/**
+			 * Next week
+			 *
+			 * @TODO Needs fixing
+			 */
+			elseif ( $options['functionality'] == 'next_week' ) {
+				$args['starting_date'] = date('Y-m-d', strtotime('next week' . $this->adjust_week_start() ) );
+				$args['days_to_show'] = 7;
+			}
 			// Default, selected day in the middle
 			else {
 				// Choosing the starting date for the array and formatting it
@@ -317,12 +332,11 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		 */
 		function filter_day_link( $html ) {
 			$html = str_replace( 'rel="prev"', 'data-js="tribe-events-view-link"', $html );
-
 			return $html;
 		}
 
 		/**
-		 * Get the dates of events in the timeframe shown on the daystrip
+		 * Get the dates of events in the timeframe shown on the day strip
 		 *
 		 * @param $start_date
 		 * @param $end_date
@@ -348,6 +362,44 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			}
 
 			return $dates;
+		}
+
+		/**
+		 * Adjust the start of the week based on the WordPress setting
+		 * @return string
+		 */
+		public function adjust_week_start() {
+			$first_day_of_week = get_option( 'start_of_week', 1 );
+			$str = '';
+			// If it's Sunday (0)
+			if ( $first_day_of_week == 0 ) {
+				$str = ' -1 day';
+			}
+			// If Tuesday (2) to Saturday (6)
+			elseif( $first_day_of_week > 1 ) {
+				$str = ' +' . $first_day_of_week-1 . ' days';
+			}
+			return $str;
+		}
+
+		/**
+		 * Makes the day view jump to a specific date (needs work)
+		 *
+		 * @param $repository_args
+		 * @param $context
+		 * @param $view
+		 *
+		 * @return mixed
+		 */
+		function  jump_to_next_week( $repository_args, $context, $view )  {
+			$event_date = $context->get( 'event_date' );
+			//if ( ! $event_date ) {
+			if ( tribe_context()->get( 'view_request' ) === 'day' ) {
+				$context = $context->alter( [ 'event_date' => '2020-10-19' ] );
+				$view->set_context( $context );
+			}
+
+			return $repository_args;
 		}
 
 		/**

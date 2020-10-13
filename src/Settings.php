@@ -282,6 +282,8 @@ if ( ! class_exists( Settings::class ) ) {
 				'forward'          => esc_html__( 'Only show days forward from the selected day', 'tribe-ext-daystrip' ),
 				'fixed_from_today' => esc_html__( 'Show fixed number of days starting today', 'tribe-ext-daystrip' ),
 				'fixed_from_date'  => esc_html__( 'Show fixed number of days starting on a specific date', 'tribe-ext-daystrip' ),
+				'current_week'     => esc_html__( 'Current week (forces 7 days)', 'tribe-ext-daystrip' ),
+				//'next_week'        => esc_html__( 'Next week (forces 7 days)', 'tribe-ext-daystrip' ), // @TODO This needs to be fixed
 			];
 	}
 		/**
