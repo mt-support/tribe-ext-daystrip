@@ -1,4 +1,4 @@
-=== The Events Calendar Extension: Daystrip ===
+=== The Events Calendar Extension: Day Strip ===
 Contributors: ModernTribe
 Donate link: http://m.tri.be/29
 Tags: events, calendar
@@ -31,6 +31,6 @@ We're always interested in your feedback and our [Help Desk](https://support.the
 
 == Changelog ==
 
-= [1.0.0] 2020-10-12 =
+= [1.0.0] 2020-10-14 =
 
 * Initial release
