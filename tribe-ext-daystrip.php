@@ -103,7 +103,8 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			wp_enqueue_style( 'tribe-ext-daystrip', plugin_dir_url( __FILE__ ) . 'src/resources/style.css' );
 			add_filter( 'tribe_the_day_link', [ $this, 'filter_day_link' ] );
 			add_action( 'tribe_template_after_include:events/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
-			add_filter( 'tribe_events_views_v2_view_repository_args', [ $this, 'jump_to_next_week' ], 10, 3 );
+			//add_filter( 'tribe_events_views_v2_view_repository_args', [ $this, 'jump_to_next_week' ], 10, 3 );
+			add_action( 'wp_footer', [ $this, 'footer_styles' ] );
 		}
 
 		/**
@@ -217,6 +218,17 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		}
 
 		/**
+		 * Get all of this extension's options.
+		 *
+		 * @return array
+		 */
+		public function get_option( $option, $default ='' ) {
+			$settings = $this->get_settings();
+
+			return $settings->get_option( $option, $default );
+		}
+
+		/**
 		 * Compiles the data for the daystrip
 		 *
 		 * @param $file
@@ -236,7 +248,6 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				'starting_date'       => '',
 				'days'                => [],
 				'event_dates'         => [],
-				'dayWidth'            => '',
 				'container_classes'   => [
 					'tribe-daystrip-container',
 					'tribe-common-b2',
@@ -317,9 +328,6 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				date( 'Y-m-d', strtotime( end( $args['days'] ) . '+1 day' ) )
 			);
 
-			// Setting up the width for the boxes
-			$args['dayWidth'] = 100 / count( $args['days'] );
-
 			$this->render_daystrip( $args );
 		}
 
@@ -383,7 +391,9 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		}
 
 		/**
-		 * Makes the day view jump to a specific date (needs work)
+		 * Makes the day view jump to a specific date
+		 *
+		 * @TODO Needs work
 		 *
 		 * @param $repository_args
 		 * @param $context
@@ -400,6 +410,23 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			}
 
 			return $repository_args;
+		}
+
+		public function footer_styles() {
+			$divider = $this->get_option( 'number_of_days' );
+			$functionality = $this->get_option( 'functionality' );
+
+			if ( $functionality == 'current_week' || $functionality == 'next_week' ) {
+				$divider = 7;
+			}
+			$cellWidth = 100 / $divider;
+			?>
+			<style id="tribe-ext-daystrip-styles">
+                .tribe-events-header .tribe-daystrip-container .tribe-daystrip-day {
+				 width: <?php echo $cellWidth; ?>%;
+			 }
+			</style>
+			<?php
 		}
 
 		/**
@@ -438,7 +465,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 
 				// Opening the day
 				$html .= '<div class="' . implode( " ",
-				                                   $args['day_classes'] ) . '" style="width:' . $args['dayWidth'] . '%;">';
+				                                   $args['day_classes'] ) . '">';
 
 				// URL
 				$html .= '<a href="' . tribe_events_get_url() . $day . '" data-js="tribe-events-view-link" aria-label="' . date( tribe_get_date_format( true ), strtotime( $day ) ) . '" title="' . date( tribe_get_date_format( true ), strtotime( $day ) ) . '">';
