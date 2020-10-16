@@ -242,7 +242,7 @@ if ( ! class_exists( Settings::class ) ) {
 					'html' => '<p>'
 					          . sprintf(
 						          esc_html__( 'The following two fields accept the date format options available to the PHP %s function.', 'tribe-ext-daystrip' ),
-						          '<a href="https://codex.wordpress.org/Formatting_Date_and_Time/" target="_blank"><code>date()</code></a>'
+						          '<a href="https://wordpress.org/support/article/formatting-date-and-time/" target="_blank"><code>date()</code></a>'
 					          )
 					          . '</p>',
 				],
