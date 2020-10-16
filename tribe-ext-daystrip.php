@@ -290,11 +290,11 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			}
 
 			// Fixed time range from today
-			if ( $options['functionality'] == 'fixed_from_today' ) {
+			if ( $options['behavior'] == 'fixed_from_today' ) {
 				$args['starting_date'] = $args['todays_date'];
 			}
 			// Fixed time range from set date
-			elseif ( $options['functionality'] == 'fixed_from_date' ) {
+			elseif ( $options['behavior'] == 'fixed_from_date' ) {
 				$sd = explode( '-', $options['start_date'] );
 				if ( checkdate( $sd[1], $sd[2], $sd[0] ) ) {
 					$args['starting_date'] = $options['start_date'];
@@ -304,11 +304,11 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				}
 			}
 			// Only show forward
-			elseif ( $options['functionality'] == 'forward' ) {
+			elseif ( $options['behavior'] == 'forward' ) {
 				$args['starting_date'] = $args['selected_date_value'];
 			}
 			// Current week
-			elseif ( $options['functionality'] == 'current_week' ) {
+			elseif ( $options['behavior'] == 'current_week' ) {
 				$args['starting_date'] = date('Y-m-d', strtotime('this week' . $this->adjust_week_start() ) );
 				$args['days_to_show'] = 7;
 			}
@@ -317,7 +317,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			 *
 			 * @TODO Needs fixing
 			 */
-			elseif ( $options['functionality'] == 'next_week' ) {
+			elseif ( $options['behavior'] == 'next_week' ) {
 				$args['starting_date'] = date('Y-m-d', strtotime('next week' . $this->adjust_week_start() ) );
 				$args['days_to_show'] = 7;
 			}
@@ -432,9 +432,9 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		 */
 		public function footer_styles() {
 			$divider = $this->get_option( 'number_of_days' );
-			$functionality = $this->get_option( 'functionality' );
+			$behavior = $this->get_option( 'behavior' );
 
-			if ( $functionality == 'current_week' || $functionality == 'next_week' ) {
+			if ( $behavior == 'current_week' || $behavior == 'next_week' ) {
 				$divider = 7;
 			}
 			$cellWidth = 100 / $divider;

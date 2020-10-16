@@ -213,14 +213,14 @@ if ( ! class_exists( Settings::class ) ) {
 					'size'            => 'small',
 					'default'         => 9,
 				],
-				'functionality' => [
+				'behavior' => [
 					'type'            => 'dropdown',
-					'label'           => esc_html__( 'Functionality', 'tribe-ext-daystrip' ),
-					'tooltip'         => esc_html__( 'Choose what functionality you would like.', 'tribe-ext-daystrip' ),
+					'label'           => esc_html__( 'Behavior', 'tribe-ext-daystrip' ),
+					'tooltip'         => esc_html__( 'Choose how you would like the day strip to behave.', 'tribe-ext-daystrip' ),
 					'validation_type' => 'options',
 					'size'            => 'small',
 					'default'         => 'default',
-					'options'         => $this->functionality_options(),
+					'options'         => $this->behavior_options(),
 				],
 				'start_date' => [
 					'type'            => 'text',
@@ -278,7 +278,7 @@ if ( ! class_exists( Settings::class ) ) {
 			);
 		}
 
-		private function functionality_options() {
+		private function behavior_options() {
 			return [
 				'default'          => esc_html__( 'Selected day always in the middle of the strip', 'tribe-ext-daystrip' ),
 				'forward'          => esc_html__( 'Only show days forward from the selected day', 'tribe-ext-daystrip' ),
