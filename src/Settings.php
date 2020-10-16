@@ -207,7 +207,7 @@ if ( ! class_exists( Settings::class ) ) {
 				],
 				'number_of_days' => [
 					'type'            => 'text',
-					'label'           => esc_html__( 'Number of days to show on the day strip', 'tribe-ext-daystrip' ),
+					'label'           => esc_html__( 'Number of days to show', 'tribe-ext-daystrip' ),
 					'tooltip'         => sprintf( esc_html__( 'The number of days to be shown on the daystrip. Best is if it is an odd number, and bigger than 2.', 'tribe-ext-daystrip' ) ) . '<br/><em>' . esc_html__( 'Default value:', 'tribe-ext-daystrip') . ' 9</em>',
 					'validation_type' => 'positive_int',
 					'size'            => 'small',
