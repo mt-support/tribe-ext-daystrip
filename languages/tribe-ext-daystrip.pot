@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: The Events Calendar Extension: Daystrip\n"
-"POT-Creation-Date: 2020-10-13 11:52+0200\n"
+"POT-Creation-Date: 2020-10-16 10:24+0200\n"
 "PO-Revision-Date: 2020-04-23 10:42+0200\n"
 "Last-Translator: Andras Guseo <aguseo@gmail.com>\n"
 "Language-Team: Modern Tribe, Inc. (support@theeventscalendar.com)\n"
@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 
 #: src/Settings.php:210
-msgid "Number of days to show on the day strip"
+msgid "Number of days to show"
 msgstr ""
 
 #: src/Settings.php:211
@@ -47,11 +47,11 @@ msgid "Default value:"
 msgstr ""
 
 #: src/Settings.php:218
-msgid "Functionality"
+msgid "Behavior"
 msgstr ""
 
 #: src/Settings.php:219
-msgid "Choose what functionality you would like."
+msgid "Choose how you would like the day strip to behave."
 msgstr ""
 
 #: src/Settings.php:227
@@ -61,8 +61,8 @@ msgstr ""
 #: src/Settings.php:228
 #, php-format
 msgid ""
-"Use YYYY-MM-DD format. Works only with the option %sShow fixed number of "
-"days starting on a specific date%s."
+"Use YYYY-MM-DD format. Works only with the option '%sShow fixed number of "
+"days starting on a specific date%s'."
 msgstr ""
 
 #: src/Settings.php:234
@@ -89,47 +89,50 @@ msgid "Date format"
 msgstr ""
 
 #: src/Settings.php:252
-msgid "j - 1, d - 01, jS - 1st, 0 - hide"
+#, php-format
+msgid "Examples: %1$s - 1, %2$s - 01, %3$s - 1st, %4$s - hide"
 msgstr ""
 
-#: src/Settings.php:259
+#: src/Settings.php:264
 msgid "Month format"
 msgstr ""
 
-#: src/Settings.php:260
-msgid "M - Jan., F - January, m - 01, n - 1, 0 - hide"
+#: src/Settings.php:265
+#, php-format
+msgid ""
+"Examples: %1$s - Jan., %2$s - January, %3$s - 01, %4$s - 1, %5$s - hide"
 msgstr ""
 
-#: src/Settings.php:267
+#: src/Settings.php:278
 msgid "Hide event marker"
 msgstr ""
 
-#: src/Settings.php:268
+#: src/Settings.php:279
 msgid ""
 "Enabling this option will hide the blue dot event marker from the daystrip."
 msgstr ""
 
-#: src/Settings.php:283
+#: src/Settings.php:294
 msgid "Selected day always in the middle of the strip"
 msgstr ""
 
-#: src/Settings.php:284
+#: src/Settings.php:295
 msgid "Only show days forward from the selected day"
 msgstr ""
 
-#: src/Settings.php:285
+#: src/Settings.php:296
 msgid "Show fixed number of days starting today"
 msgstr ""
 
-#: src/Settings.php:286
+#: src/Settings.php:297
 msgid "Show fixed number of days starting on a specific date"
 msgstr ""
 
-#: src/Settings.php:287
+#: src/Settings.php:298
 msgid "Current week (forces 7 days)"
 msgstr ""
 
-#: src/Settings.php:317
+#: src/Settings.php:328
 msgctxt "Settings header"
 msgid "Day Strip Extension Settings"
 msgstr ""
@@ -138,24 +141,24 @@ msgstr ""
 msgid "Miscellaneous Settings"
 msgstr ""
 
-#: tribe-ext-daystrip.php:123
+#: tribe-ext-daystrip.php:127
 #, php-format
 msgid ""
 "%s requires PHP version %s or newer to work. Please contact your website "
 "host and inquire about updating PHP."
 msgstr ""
 
-#: tribe-ext-daystrip.php:168
+#: tribe-ext-daystrip.php:172
 msgctxt "name of view"
 msgid "Legacy Views"
 msgstr ""
 
-#: tribe-ext-daystrip.php:170
+#: tribe-ext-daystrip.php:174
 msgctxt "name of view"
 msgid "Updated (V2) Views"
 msgstr ""
 
-#: tribe-ext-daystrip.php:178
+#: tribe-ext-daystrip.php:182
 #, php-format
 msgid ""
 "%1$s requires the \"%2$s\" so this extension's code will not run until this "

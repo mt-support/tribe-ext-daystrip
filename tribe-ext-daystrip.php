@@ -85,7 +85,6 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		 */
 		public function init() {
 			// Load plugin textdomain
-			// Don't forget to generate the 'languages/tribe-ext-daystrip.pot' file
 			load_plugin_textdomain( 'tribe-ext-daystrip', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 
 			if ( ! $this->php_version_check() ) {
@@ -100,11 +99,16 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 
 			$this->get_settings();
 
-			wp_enqueue_style( 'tribe-ext-daystrip', plugin_dir_url( __FILE__ ) . 'src/resources/style.css' );
+
 			add_filter( 'tribe_the_day_link', [ $this, 'filter_day_link' ] );
 			add_action( 'tribe_template_after_include:events/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
-			//add_filter( 'tribe_events_views_v2_view_repository_args', [ $this, 'jump_to_next_week' ], 10, 3 );
+			add_action('wp_enqueue_scripts', [ $this, 'enquque_daystrip_styles'] );
 			add_action( 'wp_footer', [ $this, 'footer_styles' ] );
+
+			/**
+			 * @TODO Leaving here for a later version
+			 */
+			//add_filter( 'tribe_events_views_v2_view_repository_args', [ $this, 'jump_to_next_week' ], 10, 3 );
 		}
 
 		/**
@@ -232,6 +236,13 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		}
 
 		/**
+		 * Enqueuing stylesheet
+		 */
+		public function enquque_daystrip_styles() {
+			wp_enqueue_style( 'tribe-ext-daystrip', plugin_dir_url( __FILE__ ) . 'src/resources/style.css' );
+		}
+
+		/**
 		 * Compiles the data for the daystrip.
 		 *
 		 * @param $file
@@ -279,11 +290,11 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			}
 
 			// Fixed time range from today
-			if ( $options['functionality'] == 'fixed_from_today' ) {
+			if ( $options['behavior'] == 'fixed_from_today' ) {
 				$args['starting_date'] = $args['todays_date'];
 			}
 			// Fixed time range from set date
-			elseif ( $options['functionality'] == 'fixed_from_date' ) {
+			elseif ( $options['behavior'] == 'fixed_from_date' ) {
 				$sd = explode( '-', $options['start_date'] );
 				if ( checkdate( $sd[1], $sd[2], $sd[0] ) ) {
 					$args['starting_date'] = $options['start_date'];
@@ -293,11 +304,11 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				}
 			}
 			// Only show forward
-			elseif ( $options['functionality'] == 'forward' ) {
+			elseif ( $options['behavior'] == 'forward' ) {
 				$args['starting_date'] = $args['selected_date_value'];
 			}
 			// Current week
-			elseif ( $options['functionality'] == 'current_week' ) {
+			elseif ( $options['behavior'] == 'current_week' ) {
 				$args['starting_date'] = date('Y-m-d', strtotime('this week' . $this->adjust_week_start() ) );
 				$args['days_to_show'] = 7;
 			}
@@ -306,7 +317,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			 *
 			 * @TODO Needs fixing
 			 */
-			elseif ( $options['functionality'] == 'next_week' ) {
+			elseif ( $options['behavior'] == 'next_week' ) {
 				$args['starting_date'] = date('Y-m-d', strtotime('next week' . $this->adjust_week_start() ) );
 				$args['days_to_show'] = 7;
 			}
@@ -389,7 +400,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			}
 			// If Tuesday (2) to Saturday (6)
 			elseif( $first_day_of_week > 1 ) {
-				$str = ' +' . $first_day_of_week-1 . ' days';
+				$str = " +" . $first_day_of_week - 1 . " days";
 			}
 			return $str;
 		}
@@ -421,9 +432,9 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		 */
 		public function footer_styles() {
 			$divider = $this->get_option( 'number_of_days' );
-			$functionality = $this->get_option( 'functionality' );
+			$behavior = $this->get_option( 'behavior' );
 
-			if ( $functionality == 'current_week' || $functionality == 'next_week' ) {
+			if ( $behavior == 'current_week' || $behavior == 'next_week' ) {
 				$divider = 7;
 			}
 			$cellWidth = 100 / $divider;
@@ -463,7 +474,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				}
 				// Setting class for selected day
 				if ( strtotime( $day ) == strtotime( $args['selected_date_value'] ) ) {
-					$args['day_classes'][] = 'current';
+					$args['day_classes'][] = 'tribe-daystrip-current';
 				}
 
 				if ( in_array( $day, $args['event_dates'] ) ) {

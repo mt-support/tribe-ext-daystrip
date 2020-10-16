@@ -207,25 +207,25 @@ if ( ! class_exists( Settings::class ) ) {
 				],
 				'number_of_days' => [
 					'type'            => 'text',
-					'label'           => esc_html__( 'Number of days to show on the day strip', 'tribe-ext-daystrip' ),
+					'label'           => esc_html__( 'Number of days to show', 'tribe-ext-daystrip' ),
 					'tooltip'         => sprintf( esc_html__( 'The number of days to be shown on the daystrip. Best is if it is an odd number, and bigger than 2.', 'tribe-ext-daystrip' ) ) . '<br/><em>' . esc_html__( 'Default value:', 'tribe-ext-daystrip') . ' 9</em>',
 					'validation_type' => 'positive_int',
 					'size'            => 'small',
 					'default'         => 9,
 				],
-				'functionality' => [
+				'behavior' => [
 					'type'            => 'dropdown',
-					'label'           => esc_html__( 'Functionality', 'tribe-ext-daystrip' ),
-					'tooltip'         => esc_html__( 'Choose what functionality you would like.', 'tribe-ext-daystrip' ),
+					'label'           => esc_html__( 'Behavior', 'tribe-ext-daystrip' ),
+					'tooltip'         => esc_html__( 'Choose how you would like the day strip to behave.', 'tribe-ext-daystrip' ),
 					'validation_type' => 'options',
 					'size'            => 'small',
 					'default'         => 'default',
-					'options'         => $this->functionality_options(),
+					'options'         => $this->behavior_options(),
 				],
 				'start_date' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Start date', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( "Use YYYY-MM-DD format. Works only with the option %sShow fixed number of days starting on a specific date%s.", 'tribe-ext-daystrip' ), '<code>', '</code>' ) . '<br/><em>' . esc_html__( 'Default value:', 'tribe-ext-daystrip') . ' 2</em>',
+					'tooltip'         => sprintf( esc_html__( "Use YYYY-MM-DD format. Works only with the option '%sShow fixed number of days starting on a specific date%s'.", 'tribe-ext-daystrip' ), '<em>', '</em>' ) . '<br/><em>' . esc_html__( 'Default value:', 'tribe-ext-daystrip') . ' 2</em>',
 					'validation_type' => 'alpha_numeric_with_dashes_and_underscores',
 					'size'            => 'medium',
 				],
@@ -242,14 +242,19 @@ if ( ! class_exists( Settings::class ) ) {
 					'html' => '<p>'
 					          . sprintf(
 						          esc_html__( 'The following two fields accept the date format options available to the PHP %s function.', 'tribe-ext-daystrip' ),
-						          '<a href="https://codex.wordpress.org/Formatting_Date_and_Time/" target="_blank"><code>date()</code></a>'
+						          '<a href="https://wordpress.org/support/article/formatting-date-and-time/" target="_blank"><code>date()</code></a>'
 					          )
 					          . '</p>',
 				],
 				'date_format' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Date format', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( 'j - 1, d - 01, jS - 1st, 0 - hide', 'tribe-ext-daystrip' ) ),
+					'tooltip'         => sprintf( esc_html__( 'Examples: %1$s - 1, %2$s - 01, %3$s - 1st, %4$s - hide', 'tribe-ext-daystrip' ),
+					                              '<code>j</code>',
+					                              '<code>d</code>',
+					                              '<code>jS</code>',
+					                              '<code>0</code>',
+					),
 					'validation_type' => 'alpha_numeric',
 					'size'            => 'small',
 					'default'         => 'j',
@@ -257,7 +262,13 @@ if ( ! class_exists( Settings::class ) ) {
 				'month_format' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Month format', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( 'M - Jan., F - January, m - 01, n - 1, 0 - hide', 'tribe-ext-daystrip' ) ),
+					'tooltip'         => sprintf( esc_html__( 'Examples: %1$s - Jan., %2$s - January, %3$s - 01, %4$s - 1, %5$s - hide', 'tribe-ext-daystrip' ),
+					                              '<code>M</code>',
+					                              '<code>F</code>',
+					                              '<code>m</code>',
+					                              '<code>n</code>',
+					                              '<code>0</code>',
+					),
 					'validation_type' => 'alpha_numeric',
 					'size'            => 'small',
 					'default'         => 'M',
@@ -278,7 +289,7 @@ if ( ! class_exists( Settings::class ) ) {
 			);
 		}
 
-		private function functionality_options() {
+		private function behavior_options() {
 			return [
 				'default'          => esc_html__( 'Selected day always in the middle of the strip', 'tribe-ext-daystrip' ),
 				'forward'          => esc_html__( 'Only show days forward from the selected day', 'tribe-ext-daystrip' ),
