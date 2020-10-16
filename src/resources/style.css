@@ -35,7 +35,7 @@
 .tribe-events-header .tribe-daystrip-day.tribe-daystrip-past a {
     color: #898b93;
 }
-.tribe-daystrip-day.current {
+.tribe-daystrip-day.tribe-daystrip-current {
     background-color: #eee;
 }
 .tribe-daystrip-day.tribe-daystrip-today {
