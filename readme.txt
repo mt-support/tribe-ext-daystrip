@@ -1,6 +1,6 @@
 === The Events Calendar Extension: Day Strip ===
-Contributors: ModernTribe
-Donate link: http://m.tri.be/29
+Contributors: theeventscalendar
+Donate link: https://evnt.is/29
 Tags: events, calendar
 Requires at least: 5.0
 Tested up to: 5.7

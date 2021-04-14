@@ -6,8 +6,8 @@
  * Description:       Adds a day strip at the top of the Day View.
  * Version:           1.0.0
  * Extension Class:   Tribe\Extensions\Daystrip\Main
- * Author:            Modern Tribe, Inc.
- * Author URI:        http://m.tri.be/1971
+ * Author:            The Events Calendar
+ * Author URI:        https://evnt.is/1971
  * License:           GPL version 3 or any later version
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:       tribe-ext-daystrip
