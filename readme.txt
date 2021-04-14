@@ -9,7 +9,7 @@ Stable tag: 1.0.1
 License: GPL version 3 or any later version
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Adds a day strip at the top of the Day View.
+Adds a day-by-day navigation strip at the top of the Day View.
 
 == Installation ==
 
