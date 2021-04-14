@@ -34,6 +34,7 @@ We're always interested in your feedback and our [Help Desk](https://support.the
 = [1.0.1] 2021-04-14 =
 
 * Fix - Adjusted the template directory to the correct one.
+* Tweak - Replaced Modern Tribe references with The Events Calendar
 
 = [1.0.0] 2020-10-16 =
 
