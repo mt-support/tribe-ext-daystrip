@@ -3,11 +3,11 @@
  * Plugin Name:       The Events Calendar Extension: Day Strip
  * Plugin URI:        https://theeventscalendar.com/extensions/daystrip/
  * GitHub Plugin URI: https://github.com/mt-support/tribe-ext-daystrip
- * Description:       Adds a day strip at the top of the Day View.
- * Version:           1.0.0
+ * Description:       Adds a day-by-day navigation strip at the top of the Day View.
+ * Version:           1.0.1
  * Extension Class:   Tribe\Extensions\Daystrip\Main
- * Author:            Modern Tribe, Inc.
- * Author URI:        http://m.tri.be/1971
+ * Author:            The Events Calendar
+ * Author URI:        https://evnt.is/1971
  * License:           GPL version 3 or any later version
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:       tribe-ext-daystrip
@@ -101,7 +101,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 
 
 			add_filter( 'tribe_the_day_link', [ $this, 'filter_day_link' ] );
-			add_action( 'tribe_template_after_include:events/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
+			add_action( 'tribe_template_after_include:events/v2/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
 			add_action('wp_enqueue_scripts', [ $this, 'enquque_daystrip_styles'] );
 			add_action( 'wp_footer', [ $this, 'footer_styles' ] );
 
