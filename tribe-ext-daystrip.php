@@ -101,7 +101,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 
 
 			add_filter( 'tribe_the_day_link', [ $this, 'filter_day_link' ] );
-			add_action( 'tribe_template_after_include:events/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
+			add_action( 'tribe_template_after_include:events/v2/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
 			add_action('wp_enqueue_scripts', [ $this, 'enquque_daystrip_styles'] );
 			add_action( 'wp_footer', [ $this, 'footer_styles' ] );
 
