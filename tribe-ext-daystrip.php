@@ -431,8 +431,8 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		 * Add dynamically calculated styles to the footer.
 		 */
 		public function footer_styles() {
-			$divider = $this->get_option( 'number_of_days' );
-			$behavior = $this->get_option( 'behavior' );
+			$divider = $this->get_option( 'number_of_days', 7 );
+			$behavior = $this->get_option( 'behavior', 'current_week' );
 
 			if ( $behavior == 'current_week' || $behavior == 'next_week' ) {
 				$divider = 7;
