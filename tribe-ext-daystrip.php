@@ -46,7 +46,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		private $settings;
 
 		/**
-		 * Setup the Extension's properties.
+		 * Set up the Extension's properties.
 		 *
 		 * This always executes even if the required plugins are not present.
 		 */
@@ -102,7 +102,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 
 			add_filter( 'tribe_the_day_link', [ $this, 'filter_day_link' ] );
 			add_action( 'tribe_template_after_include:events/v2/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
-			add_action('wp_enqueue_scripts', [ $this, 'enquque_daystrip_styles'] );
+			add_action('wp_enqueue_scripts', [ $this, 'enqueue_daystrip_styles' ] );
 			add_action( 'wp_footer', [ $this, 'footer_styles' ] );
 
 			/**
@@ -166,7 +166,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				$meets_req = false;
 			}
 
-			// Notice, if should be shown.
+			// Show notice, if it should be shown.
 			if ( ! $meets_req && is_admin() && current_user_can( 'activate_plugins' ) ) {
 				if ( 1 === $view_required_version ) {
 					$view_name = _x( 'Legacy Views', 'name of view', 'tribe-ext-daystrip' );
@@ -238,7 +238,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		/**
 		 * Enqueuing stylesheet
 		 */
-		public function enquque_daystrip_styles() {
+		public function enqueue_daystrip_styles() {
 			wp_enqueue_style( 'tribe-ext-daystrip', plugin_dir_url( __FILE__ ) . 'src/resources/style.css' );
 		}
 
@@ -331,7 +331,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 							2 ) . ' days' ) );
 			}
 
-			// Creating and filling the array of days that we show
+			// Creating and filling up the array of days that we show
 			$args['days'] = [];
 			for ( $i = 0; $i < $args['days_to_show']; $i++ ) {
 				$args['days'][] = date( 'Y-m-d', strtotime( $args['starting_date'] . ' +' . $i . ' days' ) );
@@ -355,8 +355,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		 * @return string|string[]
 		 */
 		function filter_day_link( $html ) {
-			$html = str_replace( 'rel="prev"', 'data-js="tribe-events-view-link"', $html );
-			return $html;
+			return str_replace( 'rel="prev"', 'data-js="tribe-events-view-link"', $html );
 		}
 
 		/**
@@ -365,7 +364,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 		 * @param $start_date
 		 * @param $end_date
 		 *
-		 * @return mixed
+		 * @return array The events starting within the given timeframe.
 		 */
 		function get_events_for_timeframe( $start_date, $end_date ) {
 			$args   = [
