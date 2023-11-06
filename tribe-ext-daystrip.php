@@ -302,7 +302,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				} // Fixed time range from set date
 				elseif ( $options['behavior'] == 'fixed_from_date' ) {
 					$start_date = $options['start_date'] ?? $args['todays_date'];
-					$sd = explode( '-', $start_date );
+					$sd         = explode( '-', $start_date );
 					if ( checkdate( $sd[1], $sd[2], $sd[0] ) ) {
 						$args['starting_date'] = $start_date;
 					} else {
@@ -324,12 +324,11 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 					$args['starting_date'] = date( 'Y-m-d', strtotime( 'next week' . $this->adjust_week_start() ) );
 					$args['days_to_show']  = 7;
 				} // Default, selected day in the middle
-				else {
-					// Choosing the starting date for the array and formatting it
-					$args['starting_date'] = date( 'Y-m-d',
-						strtotime( $args['selected_date_value'] . ' -' . intdiv( $args['days_to_show'],
-								2 ) . ' days' ) );
-				}
+			} else {
+				// Choosing the starting date for the array and formatting it
+				$args['starting_date'] = date( 'Y-m-d',
+					strtotime( $args['selected_date_value'] . ' -' . intdiv( $args['days_to_show'],
+							2 ) . ' days' ) );
 			}
 
 			// Creating and filling the array of days that we show
