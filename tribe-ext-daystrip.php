@@ -380,7 +380,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			$events = tribe_get_events( $args );
 
 			foreach ( $events as $event ) {
-				$d = date( 'Y-m-d', strtotime( $event->event_date ) );
+				$d = tribe_get_start_date( $event->ID, false, 'Y-m-d' );
 				if ( ! in_array( $d, $dates ) ) {
 					$dates[] = $d;
 				}
@@ -403,7 +403,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			}
 			// If Tuesday (2) to Saturday (6)
 			elseif( $first_day_of_week > 1 ) {
-				$str = " +" . $first_day_of_week - 1 . " days";
+				$str = " +" . ( $first_day_of_week - 1 ) . " days";
 			}
 			return $str;
 		}
