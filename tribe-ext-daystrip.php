@@ -503,19 +503,22 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				$html .= '</span>';
 
 				// Date of day
-				if ( ! empty( $args['options']['date_format'] ) && $args['options']['date_format'] != '0' ) {
+				$date_format = $args['options']['date_format'] ?? 'j';
+				if ( $date_format != '0' ) {
 					$html .= '<span class="tribe-daystrip-date">';
-					$html .= $date->format( $args['options']['date_format'] );
+					$html .= $date->format( $date_format );
 					$html .= '</span>';
 				}
-				if ( ! empty( $args['options']['month_format'] ) && $args['options']['month_format'] != '0' ) {
+				$month_format = $args['options']['month_format'] ?? 'M';
+				if ( $month_format != '0' ) {
 					$html .= '<span class="tribe-daystrip-month">';
-					$html .= $date->format( $args['options']['month_format'] );
+					$html .= $date->format( $month_format );
 					$html .= '</span>';
 				}
 
 				// Day has event marker
-				if ( isset( $args['options']['hide_event_marker'] ) && ! $args['options']['hide_event_marker'] ) {
+				$hide_event_marker = $args['options']['hide_event_marker'] ?? false;
+				if ( ! $hide_event_marker ) {
 					if ( in_array( $day, $args['event_dates'] ) ) {
 						$html .= '<em
 								class="tribe-events-calendar-day__daystrip-events-icon--event"
