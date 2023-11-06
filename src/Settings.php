@@ -228,6 +228,7 @@ if ( ! class_exists( Settings::class ) ) {
 					'tooltip'         => sprintf( esc_html__( "Use YYYY-MM-DD format. Works only with the option '%sShow fixed number of days starting on a specific date%s'.", 'tribe-ext-daystrip' ), '<em>', '</em>' ) . '<br/><em>' . esc_html__( 'Default value:', 'tribe-ext-daystrip') . ' 2</em>',
 					'validation_type' => 'alpha_numeric_with_dashes_and_underscores',
 					'size'            => 'medium',
+					'can_be_empty'    => true,
 				],
 				'length_of_day_name' => [
 					'type'            => 'text',
