@@ -256,6 +256,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			$args = [
 				'days_to_show'        => 9,
 				'day_name_length'     => 2,
+				'behavior'            => '',
 				'full_width'          => '',
 				'todays_date'         => $template->get( 'today' ),
 				'selected_date_value' => '',
@@ -270,16 +271,21 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				'options'             => $options,
 			];
 
-			$args['days_to_show'] = (int) $options['number_of_days'];
+			if ( isset( $options['number_of_days'] ) ) {
+				$args['days_to_show'] = (int) $options['number_of_days'];
+			}
+
 			// If out of range, then set to default
 			if ( $args['days_to_show'] < 3 || $args['days_to_show'] > 31 ) {
 				$args['days_to_show'] = 9;
 			}
 
-			$args['day_name_length'] = (int) $options['length_of_day_name'];
+			if ( isset( $options['length_of_day_name'] ) ) {
+				$args['day_name_length'] = (int) $options['length_of_day_name'];
+			}
 
 			// If full width, add the necessary CSS class
-			if ( $options['full_width'] ) {
+			if ( isset( $options['full_width'] ) && $options['full_width'] ) {
 				$args['container_classes'][] = 'full-width';
 			}
 
@@ -290,43 +296,40 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 			}
 
 			// Fixed time range from today
-			if ( $options['behavior'] == 'fixed_from_today' ) {
-				$args['starting_date'] = $args['todays_date'];
-			}
-			// Fixed time range from set date
-			elseif ( $options['behavior'] == 'fixed_from_date' ) {
-				$sd = explode( '-', $options['start_date'] );
-				if ( checkdate( $sd[1], $sd[2], $sd[0] ) ) {
-					$args['starting_date'] = $options['start_date'];
-				}
-				else {
+			if ( isset( $options['behavior'] ) ) {
+				if ( $options['behavior'] == 'fixed_from_today' ) {
 					$args['starting_date'] = $args['todays_date'];
+				} // Fixed time range from set date
+				elseif ( $options['behavior'] == 'fixed_from_date' ) {
+					$start_date = $options['start_date'] ?? $args['todays_date'];
+					$sd = explode( '-', $start_date );
+					if ( checkdate( $sd[1], $sd[2], $sd[0] ) ) {
+						$args['starting_date'] = $start_date;
+					} else {
+						$args['starting_date'] = $args['todays_date'];
+					}
+				} // Only show forward
+				elseif ( $options['behavior'] == 'forward' ) {
+					$args['starting_date'] = $args['selected_date_value'];
+				} // Current week
+				elseif ( $options['behavior'] == 'current_week' ) {
+					$args['starting_date'] = date( 'Y-m-d', strtotime( 'this week' . $this->adjust_week_start() ) );
+					$args['days_to_show']  = 7;
+				} /**
+				 * Next week
+				 *
+				 * @TODO Needs fixing
+				 */
+				elseif ( $options['behavior'] == 'next_week' ) {
+					$args['starting_date'] = date( 'Y-m-d', strtotime( 'next week' . $this->adjust_week_start() ) );
+					$args['days_to_show']  = 7;
+				} // Default, selected day in the middle
+				else {
+					// Choosing the starting date for the array and formatting it
+					$args['starting_date'] = date( 'Y-m-d',
+						strtotime( $args['selected_date_value'] . ' -' . intdiv( $args['days_to_show'],
+								2 ) . ' days' ) );
 				}
-			}
-			// Only show forward
-			elseif ( $options['behavior'] == 'forward' ) {
-				$args['starting_date'] = $args['selected_date_value'];
-			}
-			// Current week
-			elseif ( $options['behavior'] == 'current_week' ) {
-				$args['starting_date'] = date('Y-m-d', strtotime('this week' . $this->adjust_week_start() ) );
-				$args['days_to_show'] = 7;
-			}
-			/**
-			 * Next week
-			 *
-			 * @TODO Needs fixing
-			 */
-			elseif ( $options['behavior'] == 'next_week' ) {
-				$args['starting_date'] = date('Y-m-d', strtotime('next week' . $this->adjust_week_start() ) );
-				$args['days_to_show'] = 7;
-			}
-			// Default, selected day in the middle
-			else {
-				// Choosing the starting date for the array and formatting it
-				$args['starting_date'] = date( 'Y-m-d',
-				                               strtotime( $args['selected_date_value'] . ' -' . intdiv( $args['days_to_show'],
-				                                                                                        2 ) . ' days' ) );
 			}
 
 			// Creating and filling the array of days that we show
@@ -512,7 +515,7 @@ if ( class_exists( 'Tribe__Extension' ) && ! class_exists( Main::class ) ) {
 				}
 
 				// Day has event marker
-				if ( ! $args['options']['hide_event_marker'] ) {
+				if ( isset( $args['options']['hide_event_marker'] ) && ! $args['options']['hide_event_marker'] ) {
 					if ( in_array( $day, $args['event_dates'] ) ) {
 						$html .= '<em
 								class="tribe-events-calendar-day__daystrip-events-icon--event"
