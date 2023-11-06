@@ -197,7 +197,7 @@ if ( ! class_exists( Settings::class ) ) {
 			$fields = [
 				'Example'   => [
 					'type' => 'html',
-					'html' => $this->get_example_intro_text(),
+					'html' => $this->get_daystrip_intro_text(),
 				],
 				'full_width' => [
 					'type'            => 'checkbox_bool',
@@ -325,8 +325,8 @@ if ( ! class_exists( Settings::class ) ) {
 		 *
 		 * @return string
 		 */
-		private function get_example_intro_text() {
-			return '<h3>' . esc_html_x( 'Day Strip Extension Settings', 'Settings header', 'tribe-ext-daystrip' ) . '</h3>';
+		private function get_daystrip_intro_text() {
+			return '<h3 id="tec-settings-events-settings-display-daystrip">' . esc_html_x( 'Day Strip Extension Settings', 'Settings header', 'tribe-ext-daystrip' ) . '</h3>';
 		}
 
 	} // class

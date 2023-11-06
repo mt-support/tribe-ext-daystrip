@@ -36,6 +36,7 @@ We're always interested in your feedback and our [Help Desk](https://support.the
 * Fix - Make sure that all options have a default value, so the extension can be used right after activation.
 * Fix - Now the day and month names show up on the day-to-day navigation bar from the start.
 * Fix - The event marker now properly shows up on days with events.
+* Tweak - There is now no warning message when saving the settings with an empty Start Date field.
 
 = [1.0.1] 2021-04-14 =
 
