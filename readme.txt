@@ -31,6 +31,10 @@ We're always interested in your feedback and our [Help Desk](https://support.the
 
 == Changelog ==
 
+= [1.1.0] TBD =
+
+* Fix - Correct an issue where a divisor could be a non-integer, resulting in an error. [TEC-4975]
+
 = [1.0.1] 2021-04-14 =
 
 * Fix - Adjusted the template directory to the correct one.
