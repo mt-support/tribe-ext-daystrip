@@ -338,7 +338,7 @@ class Main extends Tribe__Extension {
 				break;
 		}
 
-		// Creating and filling the array of days that we show
+		// Creating and filling the array of days that we show.
 		for ( $i = 0; $i < (int) $args['number_of_days']; $i++ ) {
 			$args['days'][] = date( 'Y-m-d', strtotime( $args['start_date'] . ' +' . $i . ' days' ) );
 		}
@@ -375,7 +375,7 @@ class Main extends Tribe__Extension {
 	 * @param $start_date
 	 * @param $end_date
 	 *
-	 * @return mixed
+	 * @return array The events starting within the given timeframe.
 	 */
 	function get_events_for_timeframe( $start_date, $end_date ) {
 		$args   = [
@@ -389,7 +389,7 @@ class Main extends Tribe__Extension {
 		$events = tribe_get_events( $args );
 
 		foreach ( $events as $event ) {
-			$d = date( 'Y-m-d', strtotime( $event->event_date ) );
+			$d = tribe_get_start_date( $event->ID, false, 'Y-m-d' );
 			if ( ! in_array( $d, $dates ) ) {
 				$dates[] = $d;
 			}
@@ -414,7 +414,7 @@ class Main extends Tribe__Extension {
 		}
 		// If Tuesday (2) to Saturday (6)
 		elseif( $first_day_of_week > 1 ) {
-			$str = " +" . $first_day_of_week - 1 . " days";
+			$str = " +" . ( $first_day_of_week - 1 ) . " days";
 		}
 		return $str;
 	}
@@ -537,7 +537,7 @@ class Main extends Tribe__Extension {
 			}
 
 			// Day has event marker
-			if ( ! (bool) $args['hide_event_marker'] ) {
+			if ( empty( $args['hide_event_marker'] ) ) {
 				if ( in_array( $day, $args['event_dates'] ) ) {
 					$html .= '<em
 							class="tribe-events-calendar-day__daystrip-events-icon--event"

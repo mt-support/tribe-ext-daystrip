@@ -199,7 +199,7 @@ if ( ! class_exists( Settings::class ) ) {
 			$fields = [
 				'day_strip_ext_header'   => [
 					'type' => 'html',
-					'html' => $this->get_example_intro_text(),
+					'html' => $this->get_daystrip_intro_text(),
 				],
 				'full_width' => [
 					'type'            => 'checkbox_bool',
@@ -232,6 +232,7 @@ if ( ! class_exists( Settings::class ) ) {
 					'validate_if'         => new Tribe__Field_Conditional( 'behavior', 'fixed_from_date' ),
 					'size'                => 'medium',
 					'class'               => 'tribe-dependent',
+					'can_be_empty'    => true,
 					'fieldset_attributes' => [
 						'data-depends'   => '#tribe_ext_daystrip_behavior-select',
 						'data-condition' => 'fixed_from_date',
@@ -334,8 +335,8 @@ if ( ! class_exists( Settings::class ) ) {
 		 *
 		 * @return string
 		 */
-		private function get_example_intro_text() {
-			return '<h3>' . esc_html_x( 'Day Strip Extension Settings', 'Settings header', 'tribe-ext-daystrip' ) . '</h3>';
+		private function get_daystrip_intro_text() {
+			return '<h3 id="tec-settings-events-settings-display-daystrip">' . esc_html_x( 'Day Strip Extension Settings', 'Settings header', 'tribe-ext-daystrip' ) . '</h3>';
 		}
 
 	} // class
