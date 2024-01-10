@@ -2,7 +2,9 @@
 
 namespace Tribe\Extensions\Daystrip;
 
+use Codeception\Test\Interfaces\Dependent;
 use Tribe__Settings_Manager;
+use Tribe__Field_Conditional;
 
 if ( ! class_exists( Settings::class ) ) {
 	/**
@@ -195,7 +197,7 @@ if ( ! class_exists( Settings::class ) ) {
 		 */
 		public function add_settings() {
 			$fields = [
-				'Example'   => [
+				'day_strip_ext_header'   => [
 					'type' => 'html',
 					'html' => $this->get_example_intro_text(),
 				],
@@ -223,11 +225,17 @@ if ( ! class_exists( Settings::class ) ) {
 					'options'         => $this->behavior_options(),
 				],
 				'start_date' => [
-					'type'            => 'text',
-					'label'           => esc_html__( 'Start date', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( "Use YYYY-MM-DD format. Works only with the option '%sShow fixed number of days starting on a specific date%s'.", 'tribe-ext-daystrip' ), '<em>', '</em>' ) . '<br/><em>' . esc_html__( 'Default value:', 'tribe-ext-daystrip') . ' 2</em>',
-					'validation_type' => 'alpha_numeric_with_dashes_and_underscores',
-					'size'            => 'medium',
+					'type'                => 'text',
+					'label'               => esc_html__( 'Start date', 'tribe-ext-daystrip' ),
+					'tooltip'             => sprintf( esc_html__( "Use YYYY-MM-DD format. Works only with the option '%sShow fixed number of days starting on a specific date%s'.", 'tribe-ext-daystrip' ), '<em>', '</em>' ) . '<br/><em>' . esc_html__( 'Default value:', 'tribe-ext-daystrip') . ' 2</em>',
+					'validation_type'     => 'alpha_numeric_with_dashes_and_underscores',
+					'validate_if'         => new Tribe__Field_Conditional( 'behavior', 'fixed_from_date' ),
+					'size'                => 'medium',
+					'class'               => 'tribe-dependent',
+					'fieldset_attributes' => [
+						'data-depends'   => '#tribe_ext_daystrip_behavior-select',
+						'data-condition' => 'fixed_from_date',
+					],
 				],
 				'length_of_day_name' => [
 					'type'            => 'text',
@@ -237,7 +245,7 @@ if ( ! class_exists( Settings::class ) ) {
 					'size'            => 'small',
 					'default'         => 2,
 				],
-				'just_a_label' => [
+				'date_format_label' => [
 					'type'            => 'html',
 					'html' => '<p>'
 					          . sprintf(
@@ -249,20 +257,21 @@ if ( ! class_exists( Settings::class ) ) {
 				'date_format' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Date format', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( 'Examples: %1$s - 1, %2$s - 01, %3$s - 1st, %4$s - hide', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'Examples: %1$s - "1", %2$s - "01", %3$s - "1st", %4$s (or empty) - hide', 'tribe-ext-daystrip' ),
 					                              '<code>j</code>',
 					                              '<code>d</code>',
 					                              '<code>jS</code>',
 					                              '<code>0</code>',
 					),
 					'validation_type' => 'alpha_numeric',
+					'can_be_empty'    => true,
 					'size'            => 'small',
 					'default'         => 'j',
 				],
 				'month_format' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Month format', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( 'Examples: %1$s - Jan., %2$s - January, %3$s - 01, %4$s - 1, %5$s - hide', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'Examples: %1$s - "Jan", %2$s - "January", %3$s - "01", %4$s - "1", %5$s (or empty) - hide', 'tribe-ext-daystrip' ),
 					                              '<code>M</code>',
 					                              '<code>F</code>',
 					                              '<code>m</code>',
@@ -270,6 +279,7 @@ if ( ! class_exists( Settings::class ) ) {
 					                              '<code>0</code>',
 					),
 					'validation_type' => 'alpha_numeric',
+					'can_be_empty'    => true,
 					'size'            => 'small',
 					'default'         => 'M',
 				],
@@ -284,8 +294,8 @@ if ( ! class_exists( Settings::class ) ) {
 			$this->settings_helper->add_fields(
 				$this->prefix_settings_field_keys( $fields ),
 				'display',
-				'tribeEventsDateFormatSettingsTitle',
-				true
+				'embedGoogleMapsZoom',
+				false
 			);
 		}
 

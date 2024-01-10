@@ -4,7 +4,7 @@
  * Plugin URI:        https://theeventscalendar.com/extensions/daystrip/
  * GitHub Plugin URI: https://github.com/mt-support/tribe-ext-daystrip
  * Description:       Adds a day-by-day navigation strip at the top of the Day View.
- * Version:           1.1.0
+ * Version:           2.0.0
  * Extension Class:   Tribe\Extensions\Daystrip\Main
  * Author:            The Events Calendar
  * Author URI:        https://evnt.is/1971
@@ -28,11 +28,13 @@ namespace Tribe\Extensions\Daystrip;
 use Tribe__Autoloader;
 use Tribe__Extension;
 
-if ( ! class_exists( 'Tribe__Extension', false ) ) {
+// We intentionally want to autoload here.
+if ( ! class_exists( 'Tribe__Extension' ) ) {
 	return;
 }
 
-if ( class_exists( Main::class, false ) ) {
+// We intentionally want to autoload here, too.
+if ( class_exists( Main::class ) ) {
 	return;
 }
 
@@ -40,6 +42,15 @@ if ( class_exists( Main::class, false ) ) {
  * Extension main class, class begins loading on init() function.
  */
 class Main extends Tribe__Extension {
+
+	/**
+	 * The minimum PHP version required to run this extension.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	public $php_required_version = '7.4';
 
 	/**
 	 * The TEC autoloader instance.
@@ -65,7 +76,7 @@ class Main extends Tribe__Extension {
 	 * This always executes even if the required plugins are not present.
 	 */
 	public function construct() {
-		$this->add_required_plugin( 'Tribe__Events__Main', '5.0' );
+		$this->add_required_plugin( 'Tribe__Events__Main', '6.0' );
 	}
 
 	/**
@@ -105,7 +116,11 @@ class Main extends Tribe__Extension {
 			return;
 		}
 
-		if ( ! $this->is_using_compatible_view_version() ) {
+		// Don't run on legacy views
+		if (
+			! function_exists( 'tribe_events_views_v2_is_enabled' )
+			|| empty( tribe_events_views_v2_is_enabled() )
+		) {
 			return;
 		}
 
@@ -116,7 +131,7 @@ class Main extends Tribe__Extension {
 
 		add_filter( 'tribe_the_day_link', [ $this, 'filter_day_link' ] );
 		add_action( 'tribe_template_after_include:events/v2/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
-		add_action('wp_enqueue_scripts', [ $this, 'enquque_daystrip_styles'] );
+		add_action('wp_enqueue_scripts', [ $this, 'enqueue_daystrip_styles'] );
 		add_action( 'wp_footer', [ $this, 'footer_styles' ] );
 
 		/**
@@ -133,19 +148,8 @@ class Main extends Tribe__Extension {
 	 * @return bool
 	 */
 	private function php_version_check() {
-		$php_required_version = '7.0';
-
-		if ( version_compare( PHP_VERSION, $php_required_version, '<' ) ) {
-			if ( is_admin() && current_user_can( 'activate_plugins' ) ) {
-				$message = '<p>';
-				$message .= sprintf( __( '%s requires PHP version %s or newer to work. Please contact your website host and inquire about updating PHP.',
-											'tribe-ext-daystrip' ),
-										$this->get_name(),
-										$php_required_version );
-				$message .= sprintf( ' <a href="%1$s">%1$s</a>', 'https://wordpress.org/about/requirements/' );
-				$message .= '</p>';
-				tribe_notice( 'tribe-ext-daystrip-php-version', $message, [ 'type' => 'error' ] );
-			}
+		if ( version_compare( PHP_VERSION, $this->php_required_version, '<' ) ) {
+			$this->send_php_version_notice();
 
 			return false;
 		}
@@ -153,63 +157,17 @@ class Main extends Tribe__Extension {
 		return true;
 	}
 
-	/**
-	 * Check if we have the required TEC view. Admin notice if we don't and user should see it.
-	 *
-	 * @return bool
-	 */
-	private function is_using_compatible_view_version() {
-		$view_required_version = 2;
-
-		$meets_req = true;
-
-		// Is V2 enabled?
-		if ( function_exists( 'tribe_events_views_v2_is_enabled' ) && ! empty( tribe_events_views_v2_is_enabled() ) ) {
-			$is_v2 = true;
-		} else {
-			$is_v2 = false;
+	private function send_php_version_notice() {
+		if ( is_admin() && current_user_can( 'activate_plugins' ) ) {
+			$message = '<p>';
+			$message .= sprintf( __( '%s requires PHP version %s or newer to work. Please contact your website host and inquire about updating PHP.',
+										'tribe-ext-daystrip' ),
+									$this->get_name(),
+									$this->php_required_version );
+			$message .= sprintf( ' <a href="%1$s">%1$s</a>', 'https://wordpress.org/about/requirements/' );
+			$message .= '</p>';
+			tribe_notice( 'tribe-ext-daystrip-php-version', $message, [ 'type' => 'error' ] );
 		}
-
-		// V1 compatibility check.
-		if ( 1 === $view_required_version && $is_v2 ) {
-			$meets_req = false;
-		}
-
-		// V2 compatibility check.
-		if ( 2 === $view_required_version && ! $is_v2 ) {
-			$meets_req = false;
-		}
-
-		// Notice, if should be shown.
-		if ( ! $meets_req && is_admin() && current_user_can( 'activate_plugins' ) ) {
-			if ( 1 === $view_required_version ) {
-				$view_name = _x( 'Legacy Views', 'name of view', 'tribe-ext-daystrip' );
-			} else {
-				$view_name = _x( 'Updated (V2) Views', 'name of view', 'tribe-ext-daystrip' );
-			}
-
-			$view_name = sprintf(
-				'<a href="%s">%s</a>',
-				esc_url( admin_url( 'edit.php?page=tribe-common&tab=display&post_type=tribe_events' ) ),
-				$view_name
-			);
-
-			// Translators: 1: Extension plugin name, 2: Name of required view, linked to Display tab.
-			$message = sprintf(
-				__(
-					'%1$s requires the "%2$s" so this extension\'s code will not run until this requirement is met. You may want to deactivate this extension or visit its homepage to see if there are any updates available.',
-					'tribe-ext-daystrip'
-				),
-				$this->get_name(),
-				$view_name
-			);
-
-			tribe_notice( 'tribe-ext-daystrip-view-mismatch',
-							'<p>' . $message . '</p>',
-							[ 'type' => 'error' ] );
-		}
-
-		return $meets_req;
 	}
 
 	/**
@@ -258,10 +216,10 @@ class Main extends Tribe__Extension {
 	 * Enqueuing stylesheet.
 	 *
 	 * @since 1.0.0
-	 * @deprecated 1.1.0 Fix typo in method name.
+	 * @deprecated 2.0.0 Fix typo in method name.
 	 */
 	public function enquque_daystrip_styles() {
-		_deprecated_function( __METHOD__, '1.1.0', 'enqueue_daystrip_styles' );
+		_deprecated_function( __METHOD__, '2.0.0', 'enqueue_daystrip_styles' );
 
 		return $this->enqueue_daystrip_styles();
 	}
@@ -269,10 +227,13 @@ class Main extends Tribe__Extension {
 	/**
 	 * Enqueuing stylesheet.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 */
 	public function enqueue_daystrip_styles() {
-		wp_enqueue_style( 'tribe-ext-daystrip', plugin_dir_url( __FILE__ ) . 'src/resources/style.css' );
+		wp_enqueue_style(
+			'tribe-ext-daystrip',
+			plugin_dir_url( __FILE__ ) . 'src/resources/style.css'
+		);
 	}
 
 	/**
@@ -287,89 +248,103 @@ class Main extends Tribe__Extension {
 
 		// Some default values
 		$args = [
-			'days_to_show'        => 9,
-			'day_name_length'     => 2,
-			'full_width'          => '',
-			'todays_date'         => $template->get( 'today' ),
-			'selected_date_value' => '',
-			'starting_date'       => '',
-			'days'                => [],
-			'event_dates'         => [],
-			'day_classes'         => [],
-			'options'             => $options,
+			'behavior'            => 'default',
 			'container_classes'   => [
 				'tribe-daystrip-container',
 				'tribe-common-b2',
 			],
+			'date_format'         => 'j',
+			'day_classes'         => [],
+			'days'                => [],
+			'event_dates'         => [],
+			'full_width'          => false,
+			'hide_event_marker'   => false,
+			'length_of_day_name'  => 2,
+			'month_format'        => 'M',
+			'number_of_days'      => 9,
+			'selected_date_value' => '',
+			'start_date'          => '',
+			'todays_date'         => $template->get( 'today' ),
 		];
 
-		$args['days_to_show'] = (int) $options['number_of_days'];
-		// If out of range, then set to default
-		if ( $args['days_to_show'] < 3 || $args['days_to_show'] > 31 ) {
-			$args['days_to_show'] = 9;
+		// Some but not all are covered by the options. Let's merge them.
+		$args = shortcode_atts( $args, $options );
+
+		// If out of range set to default.
+		if ( (int) $args['number_of_days'] < 3 || (int) $args['number_of_days'] > 31 ) {
+			$args['number_of_days'] = 9;
+		} else {
+			$args['number_of_days'] = (int) $args['number_of_days'];
 		}
 
-		$args['day_name_length'] = (int) $options['length_of_day_name'];
-
-		// If full width, add the necessary CSS class.
-		if ( $options['full_width'] ) {
+		// If full width add the necessary CSS class.
+		if ( (bool) $args['full_width'] ) {
 			$args['container_classes'][] = 'full-width';
 		}
 
 		// Check the selected date, or today if nothing selected.
 		$args['selected_date_value'] = $template->get( [ 'bar', 'date' ], $args['todays_date'] );
+
 		if ( empty( $args['selected_date_value'] ) ) {
-			$args['selected_date_value'] = $args['todays_date'];
+			$args['selected_date_value'] = 'today';
 		}
 
-		// Fixed time range from today
-		if ( $options['behavior'] == 'fixed_from_today' ) {
-			$args['starting_date'] = $args['todays_date'];
-		}
-		// Fixed time range from set date
-		elseif ( $options['behavior'] == 'fixed_from_date' ) {
-			$sd = explode( '-', $options['start_date'] );
-			if ( checkdate( $sd[1], $sd[2], $sd[0] ) ) {
-				$args['starting_date'] = $options['start_date'];
-			}
-			else {
-				$args['starting_date'] = $args['todays_date'];
-			}
-		}
-		// Only show forward
-		elseif ( $options['behavior'] == 'forward' ) {
-			$args['starting_date'] = $args['selected_date_value'];
-		}
-		// Current week
-		elseif ( $options['behavior'] == 'current_week' ) {
-			$args['starting_date'] = date('Y-m-d', strtotime('this week' . $this->adjust_week_start() ) );
-			$args['days_to_show'] = 7;
-		}
-		/**
-		 * Next week
-		 *
-		 * @TODO Needs fixing
-		 */
-		elseif ( $options['behavior'] == 'next_week' ) {
-			$args['starting_date'] = date('Y-m-d', strtotime('next week' . $this->adjust_week_start() ) );
-			$args['days_to_show'] = 7;
-		}
-		// Default, selected day in the middle
-		else {
-			// Choosing the starting date for the array and formatting it
-			$args['starting_date'] = date( 'Y-m-d',
-											strtotime( $args['selected_date_value'] . ' -' . intdiv( $args['days_to_show'],
-																									2 ) . ' days' ) );
+		switch( $args['behavior'] ) {
+			case 'fixed_from_today':
+				// Fixed time range from today.
+				$args['start_date'] = $args['todays_date'];
+
+				break;
+			case 'fixed_from_date':
+				// Fixed time range from set date.
+				$sd = explode( '-', $options['start_date'] );
+
+				if ( checkdate( $sd[1], $sd[2], $sd[0] ) ) {
+					$args['start_date'] = $options['start_date'];
+				} else {
+					$args['start_date'] = $args['todays_date'];
+				}
+
+				break;
+			case 'forward':
+				// Only show forward.
+				$args['start_date'] = $args['selected_date_value'];
+
+				break;
+			case 'current_week':
+				// Current week.
+				$args['start_date'] = date('Y-m-d', strtotime('this week' . $this->adjust_week_start() ) );
+				$args['number_of_days'] = 7;
+
+				break;
+			case 'next_week':
+				/**
+				 * Next week.
+				 *
+				 * @TODO Needs fixing
+				 */
+				$args['start_date'] = date('Y-m-d', strtotime('next week' . $this->adjust_week_start() ) );
+				$args['number_of_days'] = 7;
+
+				break;
+			default:
+				$args['start_date'] = date(
+					'Y-m-d',
+					strtotime(
+						$args['selected_date_value'] . ' - ' . intdiv( $args['number_of_days'], 2 ) . ' days'
+					)
+				);
+
+				break;
 		}
 
 		// Creating and filling the array of days that we show
-		$args['days'] = [];
-		for ( $i = 0; $i < $args['days_to_show']; $i++ ) {
-			$args['days'][] = date( 'Y-m-d', strtotime( $args['starting_date'] . ' +' . $i . ' days' ) );
+		for ( $i = 0; $i < (int) $args['number_of_days']; $i++ ) {
+			$args['days'][] = date( 'Y-m-d', strtotime( $args['start_date'] . ' +' . $i . ' days' ) );
 		}
 
-		// Dates on which we have events
-		// The end date is excluded, so we need to add one day to the end
+		// Dates on which we have events.
+		// The end date is excluded, so we need to add one day to the end.
 		$args['event_dates'] = $this->get_events_for_timeframe(
 			$args['days'][0],
 			date( 'Y-m-d', strtotime( end( $args['days'] ) . '+1 day' ) )
@@ -380,6 +355,8 @@ class Main extends Tribe__Extension {
 
 	/**
 	 * Filters the URL to make it work with AJAX loading.
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param $html
 	 *
@@ -392,6 +369,8 @@ class Main extends Tribe__Extension {
 
 	/**
 	 * Get the dates of events in the timeframe shown on the day strip.
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param $start_date
 	 * @param $end_date
@@ -422,6 +401,8 @@ class Main extends Tribe__Extension {
 	/**
 	 * Adjust the start of the week based on the WordPress setting.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @return string
 	 */
 	public function adjust_week_start() {
@@ -440,6 +421,8 @@ class Main extends Tribe__Extension {
 
 	/**
 	 * Makes the day view jump to a specific date.
+	 *
+	 * @since 1.0.0
 	 *
 	 * @TODO Needs work
 	 *
@@ -462,6 +445,8 @@ class Main extends Tribe__Extension {
 
 	/**
 	 * Add dynamically calculated styles to the footer.
+	 *
+	 * @since 1.0.0
 	 */
 	public function footer_styles() {
 		$divider  = $this->get_option( 'number_of_days', 9 );
@@ -485,68 +470,74 @@ class Main extends Tribe__Extension {
 	/**
 	 * Rendering the daystrip markup.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param array $args
 	 */
 	private function render_daystrip( array $args ) {
-
-		// Opening the strip
+		// Opening the strip.
 		$html = '<div class="' . implode( " ", $args['container_classes'] ) . '">';
 
-		// Going through the array and setting up the strip
+		// Going through the array and setting up the strip.
 		foreach ( $args['days'] as $day ) {
 			// Making a date object
 			$date = date_create( $day );
 
-			unset( $args['day_classes'] );
-			$args['day_classes'][] = 'tribe-daystrip-day';
+			$day_classes = [];
+			$day_classes[] = 'tribe-daystrip-day';
+
 			// Setting class for past, today, and future events
 			if ( strtotime( $day ) < strtotime( $args['todays_date'] ) ) {
-				$args['day_classes'][] = 'tribe-daystrip-past';
+				$day_classes[] = 'tribe-daystrip-past';
 			} elseif ( strtotime( $day ) == strtotime( $args['todays_date'] ) ) {
-				$args['day_classes'][] = 'tribe-daystrip-today';
+				$day_classes[] = 'tribe-daystrip-today';
 			} elseif ( strtotime( $day ) > strtotime( $args['todays_date'] ) ) {
-				$args['day_classes'][] = 'tribe-daystrip-future';
+				$day_classes[] = 'tribe-daystrip-future';
 			}
-			// Setting class for selected day
+			// Setting class for selected day.
 			if ( strtotime( $day ) == strtotime( $args['selected_date_value'] ) ) {
-				$args['day_classes'][] = 'tribe-daystrip-current';
+				$day_classes[] = 'tribe-daystrip-current';
 			}
 
 			if ( in_array( $day, $args['event_dates'] ) ) {
-				$args['day_classes'][] = 'has-event';
+				$day_classes[] = 'has-event';
 			}
 
+			$day_classes = implode( ' ', $day_classes );
+
 			// Opening the day
-			$html .= '<div class="' . implode( " ", $args['day_classes'] ) . '">';
+			$html .= '<div class="' . esc_attr( $day_classes ) . '">';
 
 			// URL
 			$html .= '<a href="' . tribe_events_get_url() . $day . '" data-js="tribe-events-view-link" aria-label="' . date( tribe_get_date_format( true ), strtotime( $day ) ) . '" title="' . date( tribe_get_date_format( true ), strtotime( $day ) ) . '">';
 
 			// Text part of the URL
-			// Name of day
 			$html .= '<span class="tribe-daystrip-dayname">';
-			if ( $args['day_name_length'] == -1 ) {
+
+			// Name of day.
+			if ( (int) $args['length_of_day_name'] < 0 ) {
 				$html .= $date->format( 'l' );
+			} else {
+				$html .= substr( $date->format( 'l' ), 0, (int) $args['length_of_day_name'] );
 			}
-			else {
-				$html .= substr( $date->format( 'l' ), 0, $args['day_name_length'] );
-			}
+
 			$html .= '</span>';
 
 			// Date of day
-			if ( ! empty( $args['options']['date_format'] ) && $args['options']['date_format'] != '0' ) {
+			if ( ! empty( $args['date_format'] ) ) {
 				$html .= '<span class="tribe-daystrip-date">';
-				$html .= $date->format( $args['options']['date_format'] );
+				$html .= $date->format( $args['date_format'] );
 				$html .= '</span>';
 			}
-			if ( ! empty( $args['options']['month_format'] ) && $args['options']['month_format'] != '0' ) {
+
+			if ( ! empty( $args['month_format'] ) ) {
 				$html .= '<span class="tribe-daystrip-month">';
-				$html .= $date->format( $args['options']['month_format'] );
+				$html .= $date->format( $args['month_format'] );
 				$html .= '</span>';
 			}
 
 			// Day has event marker
-			if ( ! $args['options']['hide_event_marker'] ) {
+			if ( ! (bool) $args['hide_event_marker'] ) {
 				if ( in_array( $day, $args['event_dates'] ) ) {
 					$html .= '<em
 							class="tribe-events-calendar-day__daystrip-events-icon--event"

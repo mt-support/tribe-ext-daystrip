@@ -5,7 +5,7 @@ Tags: events, calendar
 Requires at least: 5.0
 Tested up to: 5.7
 Requires PHP: 7.0
-Stable tag: 1.0.1
+Stable tag: 2.0.0
 License: GPL version 3 or any later version
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -29,11 +29,20 @@ Please visit our [extension library](https://theeventscalendar.com/extensions/) 
 
 We're always interested in your feedback and our [Help Desk](https://support.theeventscalendar.com/) are the best place to flag any issues. Do note, however, that the degree of support we provide for extensions like this one tends to be very limited.
 
+== Upgrade Notice ==
+= [2.0] =
+
+Please see the changelog for the complete list of changes in this release.
+This extension is no longer compatible with versions of The Events Calendar prior to 6.0.
+Remember to always make a backup of your database and files before updating!
+
 == Changelog ==
 
-= [1.1.0] TBD =
+= [2.0.0] TBD =
 
+* Version - This and future versions of the extension require TEC 6.0. It is no longer compatible with the legacy views.
 * Fix - Correct an issue where a divisor could be a non-integer, resulting in an error. [TEC-4975]
+* Deprecated - Deprecated `enquque_daystrip_styles()` for `enqueue_daystrip_styles()` to correct a spelling error.
 
 = [1.0.1] 2021-04-14 =
 
