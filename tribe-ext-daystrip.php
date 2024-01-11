@@ -131,7 +131,7 @@ class Main extends Tribe__Extension {
 
 		add_filter( 'tribe_the_day_link', [ $this, 'filter_day_link' ] );
 		add_action( 'tribe_template_after_include:events/v2/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
-		add_action('wp_enqueue_scripts', [ $this, 'enqueue_daystrip_styles'] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_daystrip_styles' ] );
 		add_action( 'wp_footer', [ $this, 'footer_styles' ] );
 
 		/**
@@ -323,7 +323,7 @@ class Main extends Tribe__Extension {
 				 *
 				 * @TODO Needs fixing
 				 */
-				$args['start_date'] = date('Y-m-d', strtotime('next week' . $this->adjust_week_start() ) );
+				$args['start_date'] = date( 'Y-m-d', strtotime( 'next week' . $this->adjust_week_start() ) );
 				$args['number_of_days'] = 7;
 
 				break;

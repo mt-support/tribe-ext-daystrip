@@ -272,7 +272,7 @@ if ( ! class_exists( Settings::class ) ) {
 				'month_format' => [
 					'type'            => 'text',
 					'label'           => esc_html__( 'Month format', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( 'Examples: %1$s - "Jan", %2$s - "January", %3$s - "01", %4$s - "1", %5$s (or empty) - hide', 'tribe-ext-daystrip' ),
+					'tooltip'         => sprintf( esc_html__( 'Examples: %1$s - "Jan.", %2$s - "January", %3$s - "01", %4$s - "1", %5$s (or empty) - hide', 'tribe-ext-daystrip' ),
 					                              '<code>M</code>',
 					                              '<code>F</code>',
 					                              '<code>m</code>',
