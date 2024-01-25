@@ -240,7 +240,7 @@ class Main extends Tribe__Extension {
 		$args = [
 			'behavior'            => 'default',
 			'container_classes'   => [
-				'tribe-daystrip-container',
+				'tribe-daystrip__container',
 				'tribe-common-b2',
 			],
 			'date_format'         => 'j',
@@ -269,7 +269,7 @@ class Main extends Tribe__Extension {
 
 		// If full width add the necessary CSS class.
 		if ( (bool) $args['full_width'] ) {
-			$args['container_classes'][] = 'full-width';
+			$args['container_classes'][] = 'tribe-daystrip__container--full-width';
 		}
 
 		// Check the selected date, or today if nothing selected.
@@ -396,10 +396,10 @@ class Main extends Tribe__Extension {
 	 * @return string
 	 */
 	public function adjust_week_start() {
-		$first_day_of_week = get_option( 'start_of_week', 1 );
+		$first_day_of_week = absint( get_option( 'start_of_week', 1 ) );
 		$str = '';
 		// If it's Sunday (0)
-		if ( $first_day_of_week == 0 ) {
+		if ( $first_day_of_week === 0 ) {
 			$str = ' -1 day';
 		}
 		// If Tuesday (2) to Saturday (6)
@@ -443,14 +443,14 @@ class Main extends Tribe__Extension {
 		$behavior = $this->get_option( 'behavior', 'default' );
 
 		// Force divider to 7 if behavior is current or next week.
-		if ( $behavior == 'current_week' || $behavior == 'next_week' ) {
+		if ( $behavior === 'current_week' || $behavior === 'next_week' ) {
 			$divider = 7;
 		}
 
 		$cell_width = 100 / absint( $divider );
 
 		sprintf(
-			'%1$s .tribe-events-header .tribe-daystrip-container .tribe-daystrip-day { width: %2$d%%; } %3$s',
+			'%1$s .tribe-events-header .tribe-daystrip__container .tribe-daystrip__day { width: %2$d%%; } %3$s',
 			'<style id="tribe-ext-daystrip-styles">',
 			$cell_width,
 			'</style>'
@@ -474,19 +474,19 @@ class Main extends Tribe__Extension {
 			$date = date_create( $day );
 
 			$day_classes = [];
-			$day_classes[] = 'tribe-daystrip-day';
+			$day_classes[] = 'tribe-daystrip__day';
 
 			// Setting class for past, today, and future events
 			if ( strtotime( $day ) < strtotime( $args['todays_date'] ) ) {
-				$day_classes[] = 'tribe-daystrip-past';
-			} elseif ( strtotime( $day ) == strtotime( $args['todays_date'] ) ) {
-				$day_classes[] = 'tribe-daystrip-today';
+				$day_classes[] = 'tribe-daystrip__day--past';
+			} elseif ( strtotime( $day ) === strtotime( $args['todays_date'] ) ) {
+				$day_classes[] = 'tribe-daystrip__day--today';
 			} elseif ( strtotime( $day ) > strtotime( $args['todays_date'] ) ) {
-				$day_classes[] = 'tribe-daystrip-future';
+				$day_classes[] = 'tribe-daystrip__future';
 			}
 			// Setting class for selected day.
-			if ( strtotime( $day ) == strtotime( $args['selected_date_value'] ) ) {
-				$day_classes[] = 'tribe-daystrip-current';
+			if ( strtotime( $day ) === strtotime( $args['selected_date_value'] ) ) {
+				$day_classes[] = 'tribe-daystrip__day--current';
 			}
 
 			if ( in_array( $day, $args['event_dates'] ) ) {
@@ -502,7 +502,7 @@ class Main extends Tribe__Extension {
 			$html .= '<a href="' . tribe_events_get_url() . $day . '" data-js="tribe-events-view-link" aria-label="' . date( tribe_get_date_format( true ), strtotime( $day ) ) . '" title="' . date( tribe_get_date_format( true ), strtotime( $day ) ) . '">';
 
 			// Text part of the URL
-			$html .= '<span class="tribe-daystrip-dayname">';
+			$html .= '<span class="tribe-daystrip__day-name">';
 
 			// Name of day.
 			if ( (int) $args['length_of_day_name'] < 0 ) {
@@ -515,13 +515,13 @@ class Main extends Tribe__Extension {
 
 			// Date of day
 			if ( ! empty( $args['date_format'] ) ) {
-				$html .= '<span class="tribe-daystrip-date">';
+				$html .= '<span class="tribe-daystrip__date">';
 				$html .= $date->format( $args['date_format'] );
 				$html .= '</span>';
 			}
 
 			if ( ! empty( $args['month_format'] ) ) {
-				$html .= '<span class="tribe-daystrip-month">';
+				$html .= '<span class="tribe-daystrip__month">';
 				$html .= $date->format( $args['month_format'] );
 				$html .= '</span>';
 			}

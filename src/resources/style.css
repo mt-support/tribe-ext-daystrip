@@ -1,44 +1,41 @@
-.tribe-events-header .tribe-daystrip-container {
+.tribe-events-header .tribe-daystrip__container {
     display: none;
 }
-.tribe-events-header .tribe-daystrip-container.full-width {
+.tribe-events-header .tribe-daystrip__container--full-width {
     width: 100%;
     margin-top: 1em;
 }
-.tribe-common--breakpoint-medium.tribe-common .tribe-events-header .tribe-daystrip-container {
+.tribe-common--breakpoint-medium.tribe-common .tribe-events-header .tribe-daystrip__container {
     line-height: 1.1;
     display: flex;
     flex: auto;
     justify-content: space-between;
 }
-.tribe-events-header .tribe-daystrip-container .tribe-daystrip-day {
+.tribe-events-header .tribe-daystrip__container .tribe-daystrip__day {
     text-align: center;
     padding: 10px 5px;
     word-wrap: normal;
     flex-grow: 1;
 }
-.tribe-events-header .tribe-daystrip-container .tribe-daystrip-day:nth-child(n+2) {
+.tribe-events-header .tribe-daystrip__container .tribe-daystrip__day:nth-child(n+2) {
     border-left: 1px solid #d5d5d5;
 }
-.tribe-daystrip-day span {
+.tribe-daystrip__day span {
     display: block;
     text-align: center;
 }
-.tribe-daystrip-dayname {
+.tribe-daystrip__day-name {
     font-size: 0.7em;
     overflow: hidden;
     text-transform: uppercase;
 }
-.tribe-daystrip-date {
-
-}
-.tribe-events-header .tribe-daystrip-day.tribe-daystrip-past a {
+.tribe-events-header .tribe-daystrip__day--past a {
     color: #898b93;
 }
-.tribe-daystrip-day.tribe-daystrip-current {
+.tribe-daystrip__day--current {
     background-color: #eee;
 }
-.tribe-daystrip-day.tribe-daystrip-today {
+.tribe-daystrip__day--today {
     font-weight: bold;
 }
 .tribe-events .tribe-events-calendar-day__daystrip-events-icon--event {
