@@ -18,7 +18,7 @@
     flex-grow: 1;
 }
 .tribe-events-header .tribe-daystrip__container .tribe-daystrip__day:nth-child(n+2) {
-    border-left: 1px solid #d5d5d5;
+    border-left: 1px solid car(--tec-color-border-default);
 }
 .tribe-daystrip__day span {
     display: block;
@@ -30,17 +30,17 @@
     text-transform: uppercase;
 }
 .tribe-events-header .tribe-daystrip__day--past a {
-    color: #898b93;
+    color: var(--tec-color-text-primary-light);
 }
 .tribe-daystrip__day--current {
-    background-color: #eee;
+    background-color: var(--tec-color-background-secondary);
 }
 .tribe-daystrip__day--today {
     font-weight: bold;
 }
 .tribe-events .tribe-events-calendar-day__daystrip-events-icon--event {
     display: inline-block;
-    background-color: #334aff;
+    background-color: var(--tec-color-accent-primary);
     border-radius: 50%;
     height: 8px;
     width: 8px;
