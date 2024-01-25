@@ -116,18 +116,8 @@ class Main extends Tribe__Extension {
 			return;
 		}
 
-		// Don't run on legacy views
-		if (
-			! function_exists( 'tribe_events_views_v2_is_enabled' )
-			|| empty( tribe_events_views_v2_is_enabled() )
-		) {
-			return;
-		}
-
 		$this->class_loader();
-
 		$this->get_settings();
-
 
 		add_filter( 'tribe_the_day_link', [ $this, 'filter_day_link' ] );
 		add_action( 'tribe_template_after_include:events/v2/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
