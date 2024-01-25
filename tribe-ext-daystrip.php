@@ -443,7 +443,7 @@ class Main extends Tribe__Extension {
 			} elseif ( strtotime( $day ) === strtotime( $args['todays_date'] ) ) {
 				$day_classes[] = 'tribe-daystrip__day--today';
 			} elseif ( strtotime( $day ) > strtotime( $args['todays_date'] ) ) {
-				$day_classes[] = 'tribe-daystrip__future';
+				$day_classes[] = 'tribe-daystrip__day--future';
 			}
 			// Setting class for selected day.
 			if ( strtotime( $day ) === strtotime( $args['selected_date_value'] ) ) {
@@ -491,7 +491,7 @@ class Main extends Tribe__Extension {
 			if ( empty( $args['hide_event_marker'] ) ) {
 				if ( in_array( $day, $args['event_dates'] ) ) {
 					$html .= '<em
-							class="tribe-events-calendar-day__daystrip-events-icon--event"
+							class="tribe-daystrip__event-icon"
 							aria-label="Has event" title="Has event"></em>';
 				}
 			}
