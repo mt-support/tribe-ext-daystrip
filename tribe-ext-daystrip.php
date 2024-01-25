@@ -123,11 +123,6 @@ class Main extends Tribe__Extension {
 		add_action( 'tribe_template_after_include:events/v2/day/top-bar/datepicker', [ $this, 'daystrip' ], 10, 3 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_daystrip_styles' ] );
 		add_action( 'wp_footer', [ $this, 'footer_styles' ] );
-
-		/**
-		 * @TODO Leaving here for a later version
-		 */
-		//add_filter( 'tribe_events_views_v2_view_repository_args', [ $this, 'jump_to_next_week' ], 10, 3 );
 	}
 
 	/**
@@ -307,16 +302,6 @@ class Main extends Tribe__Extension {
 				$args['number_of_days'] = 7;
 
 				break;
-			case 'next_week':
-				/**
-				 * Next week.
-				 *
-				 * @TODO Needs fixing
-				 */
-				$args['start_date'] = date( 'Y-m-d', strtotime( 'next week' . $this->adjust_week_start() ) );
-				$args['number_of_days'] = 7;
-
-				break;
 			default:
 				$args['start_date'] = date(
 					'Y-m-d',
@@ -410,30 +395,6 @@ class Main extends Tribe__Extension {
 	}
 
 	/**
-	 * Makes the day view jump to a specific date.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @TODO Needs work
-	 *
-	 * @param $repository_args
-	 * @param $context
-	 * @param $view
-	 *
-	 * @return mixed
-	 */
-	function  jump_to_next_week( $repository_args, $context, $view )  {
-		$event_date = $context->get( 'event_date' );
-		//if ( ! $event_date ) {
-		if ( tribe_context()->get( 'view_request' ) === 'day' ) {
-			$context = $context->alter( [ 'event_date' => '2020-10-19' ] );
-			$view->set_context( $context );
-		}
-
-		return $repository_args;
-	}
-
-	/**
 	 * Add dynamically calculated styles to the footer.
 	 *
 	 * @since 1.0.0
@@ -443,7 +404,7 @@ class Main extends Tribe__Extension {
 		$behavior = $this->get_option( 'behavior', 'default' );
 
 		// Force divider to 7 if behavior is current or next week.
-		if ( $behavior === 'current_week' || $behavior === 'next_week' ) {
+		if ( $behavior === 'current_week' ) {
 			$divider = 7;
 		}
 

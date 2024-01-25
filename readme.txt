@@ -38,7 +38,7 @@ Remember to always make a backup of your database and files before updating!
 
 == Changelog ==
 
-= [2.0.0] TBD =
+= [2.0.0] 2024-01-25 =
 
 * Version - This and future versions of the extension require TEC 6.0. It is no longer compatible with the legacy views.
 * Fix - Correct an issue where a divisor could be a non-integer, resulting in an error. [TEC-4975]
