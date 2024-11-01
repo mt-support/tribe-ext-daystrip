@@ -291,7 +291,7 @@ if ( ! class_exists( Settings::class ) ) {
 				'hide_event_marker' => [
 					'type'            => 'checkbox_bool',
 					'label'           => esc_html__( 'Hide event marker', 'tribe-ext-daystrip' ),
-					'tooltip'         => sprintf( esc_html__( 'Enabling this option will hide the blue dot event marker from the daystrip.', 'tribe-ext-daystrip' ) ),
+					'tooltip'         => esc_html__( 'Enabling this option will hide the blue dot event marker from the daystrip.', 'tribe-ext-daystrip' ),
 					'validation_type' => 'boolean',
 				],
 			];
@@ -303,15 +303,7 @@ if ( ! class_exists( Settings::class ) ) {
 
 			$fields = tribe( 'settings' )->wrap_section_content( 'tec-events-settings-calendar-daystrip', $fields );
 
-			$x = 0;
-
 			return array_merge( $settings, $fields );
-			/*$this->settings_helper->add_fields(
-				$this->prefix_settings_field_keys( $fields ),
-				'display-calendar-tab',
-				'tribeDisableTribeBar',
-				false
-			);*/
 		}
 
 		private function behavior_options() {
