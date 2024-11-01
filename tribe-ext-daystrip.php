@@ -4,7 +4,7 @@
  * Plugin URI:        https://theeventscalendar.com/extensions/daystrip/
  * GitHub Plugin URI: https://github.com/mt-support/tribe-ext-daystrip
  * Description:       Adds a day-by-day navigation strip at the top of the Day View.
- * Version:           2.0.0
+ * Version:           2.1.0
  * Extension Class:   Tribe\Extensions\Daystrip\Main
  * Author:            The Events Calendar
  * Author URI:        https://evnt.is/1971
@@ -26,6 +26,7 @@
 namespace Tribe\Extensions\Daystrip;
 
 use Tribe__Autoloader;
+use Tribe__Events__Main;
 use Tribe__Extension;
 
 // We intentionally want to autoload here.
@@ -71,12 +72,12 @@ class Main extends Tribe__Extension {
 	private $settings;
 
 	/**
-	 * Setup the Extension's properties.
+	 * Set up the Extension's properties.
 	 *
 	 * This always executes even if the required plugins are not present.
 	 */
 	public function construct() {
-		$this->add_required_plugin( 'Tribe__Events__Main', '6.0' );
+		$this->add_required_plugin( 'Tribe__Events__Main', '6.7.0-dev' );
 	}
 
 	/**
@@ -206,7 +207,7 @@ class Main extends Tribe__Extension {
 	public function enquque_daystrip_styles() {
 		_deprecated_function( __METHOD__, '2.0.0', 'enqueue_daystrip_styles' );
 
-		return $this->enqueue_daystrip_styles();
+		$this->enqueue_daystrip_styles();
 	}
 
 	/**
@@ -400,6 +401,11 @@ class Main extends Tribe__Extension {
 	 * @since 1.0.0
 	 */
 	public function footer_styles() {
+		// Bail, if not day view.
+		if ( tribe_context()->get( 'view' ) != 'day' ) {
+			return;
+		}
+
 		$divider  = $this->get_option( 'number_of_days', 9 );
 		$behavior = $this->get_option( 'behavior', 'default' );
 
@@ -410,7 +416,7 @@ class Main extends Tribe__Extension {
 
 		$cell_width = 100 / absint( $divider );
 
-		sprintf(
+		printf(
 			'%1$s .tribe-events-header .tribe-daystrip__container .tribe-daystrip__day { width: %2$d%%; } %3$s',
 			'<style id="tribe-ext-daystrip-styles">',
 			$cell_width,
