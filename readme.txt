@@ -35,12 +35,6 @@ We're always interested in your feedback and our [Help Desk](https://support.the
 This extension is no longer compatible with versions of The Events Calendar prior to 6.7.0.
 Please see the changelog for the complete list of changes in this release.
 
-= [2.0.0] =
-
-Please see the changelog for the complete list of changes in this release.
-This extension is no longer compatible with versions of The Events Calendar prior to 6.0.
-Remember to always make a backup of your database and files before updating!
-
 == Changelog ==
 
 = [2.1.0] 2024-11-01 =
