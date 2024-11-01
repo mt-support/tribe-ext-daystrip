@@ -38,7 +38,11 @@ if ( ! class_exists( Settings::class ) ) {
 
 			$this->set_options_prefix( $options_prefix );
 
-			// Add settings specific to the extension.
+			/**
+			 * Add settings specific to the extension.
+			 *
+			 * @since 2.0.0 Use the filter instead of hooking into `admin_init`
+			 */
 			add_filter( 'tec_events_settings_display_calendar_section',	[ $this, 'add_settings' ] );
 		}
 

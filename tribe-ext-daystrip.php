@@ -4,7 +4,7 @@
  * Plugin URI:        https://theeventscalendar.com/extensions/daystrip/
  * GitHub Plugin URI: https://github.com/mt-support/tribe-ext-daystrip
  * Description:       Adds a day-by-day navigation strip at the top of the Day View.
- * Version:           2.0.0
+ * Version:           2.1.0
  * Extension Class:   Tribe\Extensions\Daystrip\Main
  * Author:            The Events Calendar
  * Author URI:        https://evnt.is/1971
