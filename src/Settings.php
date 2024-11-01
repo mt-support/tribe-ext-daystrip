@@ -39,7 +39,11 @@ if ( ! class_exists( Settings::class ) ) {
 			$this->set_options_prefix( $options_prefix );
 
 			// Add settings specific to OSM
-			add_action( 'admin_init', [ $this, 'add_settings' ] );
+			//add_action( 'admin_init', [ $this, 'add_settings' ] );
+			add_filter(
+				'tec_events_settings_display_calendar_section',
+				[ $this, 'add_settings' ]
+			);
 		}
 
 		/**
@@ -195,9 +199,9 @@ if ( ! class_exists( Settings::class ) ) {
 		 * Adds a new section of fields to Events > Settings > General tab, appearing after the "Map Settings" section
 		 * and before the "Miscellaneous Settings" section.
 		 */
-		public function add_settings() {
-			$fields = [
-				'day_strip_ext_header'   => [
+		public function add_settings( $settings ) {
+			$fields_setup = [
+				'day_strip_ext_heading'   => [
 					'type' => 'html',
 					'html' => $this->get_daystrip_intro_text(),
 				],
@@ -292,12 +296,22 @@ if ( ! class_exists( Settings::class ) ) {
 				],
 			];
 
-			$this->settings_helper->add_fields(
+			$fields = [];
+			foreach( $fields_setup as $key => $value ) {
+				$fields[ $this->get_options_prefix() . $key ] = $value;
+			}
+
+			$fields = tribe( 'settings' )->wrap_section_content( 'tec-events-settings-calendar-daystrip', $fields );
+
+			$x = 0;
+
+			return array_merge( $settings, $fields );
+			/*$this->settings_helper->add_fields(
 				$this->prefix_settings_field_keys( $fields ),
-				'display',
-				'embedGoogleMapsZoom',
+				'display-calendar-tab',
+				'tribeDisableTribeBar',
 				false
-			);
+			);*/
 		}
 
 		private function behavior_options() {
@@ -336,7 +350,7 @@ if ( ! class_exists( Settings::class ) ) {
 		 * @return string
 		 */
 		private function get_daystrip_intro_text() {
-			return '<h3 id="tec-settings-events-settings-display-daystrip">' . esc_html_x( 'Day Strip Extension Settings', 'Settings header', 'tribe-ext-daystrip' ) . '</h3>';
+			return '<h3 id="tec-settings-events-settings-display-daystrip" class="tec-settings-form__section-header tec-settings-form__section-header--sub">' . esc_html_x( 'Day Strip Extension Settings', 'Settings header', 'tribe-ext-daystrip' ) . '</h3>';
 		}
 
 	} // class
