@@ -206,7 +206,7 @@ class Main extends Tribe__Extension {
 	public function enquque_daystrip_styles() {
 		_deprecated_function( __METHOD__, '2.0.0', 'enqueue_daystrip_styles' );
 
-		return $this->enqueue_daystrip_styles();
+		$this->enqueue_daystrip_styles();
 	}
 
 	/**
