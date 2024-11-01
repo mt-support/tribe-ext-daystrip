@@ -41,6 +41,9 @@ Remember to always make a backup of your database and files before updating!
 = [2.1.0] 2024-11-01 =
 
 * Fix - Make sure the settings are visible and work with the new TEC admin interface. [TECEXT-337]
+* Fix - Changed a `sprintf()` to `print()` for outputting styling code directly into the markup, ensuring proper display of styles.
+* Fix - Added a check so that some styling is only loaded on the pages where needed.
+* Tweak - Updated plugin version requirement.
 
 = [2.0.0] 2024-01-25 =
 
