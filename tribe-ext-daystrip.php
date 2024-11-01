@@ -26,6 +26,7 @@
 namespace Tribe\Extensions\Daystrip;
 
 use Tribe__Autoloader;
+use Tribe__Events__Main;
 use Tribe__Extension;
 
 // We intentionally want to autoload here.
@@ -76,7 +77,7 @@ class Main extends Tribe__Extension {
 	 * This always executes even if the required plugins are not present.
 	 */
 	public function construct() {
-		$this->add_required_plugin( 'Tribe__Events__Main', '6.0' );
+		$this->add_required_plugin( 'Tribe__Events__Main', '6.7.0-dev' );
 	}
 
 	/**
